@@ -9,5 +9,5 @@ class AppColor {
   static const Color grey2Color = Color(0xFFd8d8d9);
   static const Color containerColor = Color(0xFFfbd652);
   static const Color meanGreen = Color(0xFF42861d);
-  static const Color setOrgane = Color(0xFFf58830);
+  static const Color setOrange = Color(0xFFf58830);
 }

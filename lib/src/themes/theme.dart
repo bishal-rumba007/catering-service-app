@@ -68,7 +68,7 @@ class AppTheme {
       bodyMedium: GoogleFonts.inter(
         fontSize: 14,
         fontWeight: FontWeight.w500,
-        color: AppColor.darkColor.withOpacity(0.5),
+        color: AppColor.darkColor.withOpacity(0.7),
       ),
       bodySmall: GoogleFonts.inter(
         fontSize: 12,
@@ -133,25 +133,20 @@ class AppTheme {
       ),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(AppColor.primaryRed),
-        textStyle: MaterialStateProperty.all<TextStyle>(
-          GoogleFonts.inter(
-            fontWeight: FontWeight.w800,
-            fontSize: 16,
-            color: Colors.white, // Text color for the button
-          ),
+      style: ElevatedButton.styleFrom(
+        minimumSize: const Size(double.infinity, 50),
+        textStyle:  GoogleFonts.inter(
+          fontWeight: FontWeight.w600,
+          fontSize: 16,
+          color: Colors.white,
         ),
-        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-          const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
-        ),
-        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-        ),
-      ),
+        backgroundColor: AppColor.primaryRed,
+        foregroundColor: Colors.white,
+        elevation: 2,
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
+      )
     ),
+
     inputDecorationTheme: InputDecorationTheme(
       contentPadding:
           const EdgeInsets.symmetric(vertical: 14.0, horizontal: 16.0),
@@ -161,21 +156,38 @@ class AppTheme {
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8.0),
-        borderSide: const BorderSide(color: AppColor.greyColor, width: 1.0),
+        borderSide: BorderSide(color: AppColor.greyColor.withOpacity(0.8), width: 1.0),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8.0),
-        borderSide: const BorderSide(color: AppColor.primaryRed, width: 2.0),
+        borderSide: const BorderSide(color: AppColor.primaryRed, width: 1.5),
       ),
       labelStyle: GoogleFonts.inter(
         fontSize: 14,
         fontWeight: FontWeight.w500,
-        color: AppColor.darkColor.withOpacity(0.5),
+        color: AppColor.darkColor.withOpacity(0.6),
+      ),
+      floatingLabelStyle: GoogleFonts.inter(
+        fontSize: 14,
+        fontWeight: FontWeight.w600,
+        color: AppColor.primaryRed,
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8.0),
+        borderSide: const BorderSide(color: AppColor.setOrange, width: 1.5),
       ),
       errorStyle: GoogleFonts.inter(
         fontSize: 12,
         color: Colors.red,
       ),
     ),
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        textStyle: GoogleFonts.inter(
+          fontSize: 14,
+          fontWeight: FontWeight.w600
+        )
+      )
+    )
   );
 }
