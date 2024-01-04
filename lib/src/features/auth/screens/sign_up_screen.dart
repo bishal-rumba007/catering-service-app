@@ -1,10 +1,12 @@
 import 'package:catering_service_app/src/common/common_export.dart';
 import 'package:catering_service_app/src/features/auth/screens/auth_provider.dart';
 import 'package:catering_service_app/src/features/auth/screens/login_screen.dart';
-import 'package:catering_service_app/src/features/dashboard/screens/home_screen.dart';
+import 'package:catering_service_app/src/features/auth/screens/widgets/build_dialogs.dart';
+import 'package:catering_service_app/src/features/dashboard/screens/main_screen.dart';
 import 'package:catering_service_app/src/themes/export_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
 class SignUpScreen extends StatefulWidget {
@@ -15,121 +17,146 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  final GlobalKey _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 18.0),
+          padding: EdgeInsets.symmetric(horizontal: 18.w),
           child: SingleChildScrollView(
             child: Form(
               key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const SizedBox(
-                    height: 100,
+                  SizedBox(
+                    height: 100.h,
                   ),
                   Align(
                     alignment: Alignment.topLeft,
                     child: Text(
                       'Create an Account',
-                      style: Theme.of(context)
+                      style: Theme
+                          .of(context)
                           .textTheme
                           .headlineSmall
                           ?.copyWith(color: Colors.black),
                     ),
                   ),
-                  const SizedBox(
-                    height: 25,
+                  SizedBox(
+                    height: 25.h,
                   ),
                   BuildTextFormField(
                     controller: _nameController,
                     labelText: 'Full Name',
                     textInputType: TextInputType.name,
                     textInputAction: TextInputAction.next,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please Enter your full name';
+                      }
+                      return null;
+                    },
                   ),
-                  const SizedBox(
-                    height: 20,
+                  SizedBox(
+                    height: 20.h,
                   ),
                   BuildTextFormField(
                     controller: _emailController,
                     labelText: 'Email',
                     textInputType: TextInputType.emailAddress,
                     textInputAction: TextInputAction.next,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please Enter your email';
+                      }
+                      return null;
+                    },
                   ),
-                  const SizedBox(
-                    height: 20,
+                  SizedBox(
+                    height: 20.h,
                   ),
                   BuildTextFormField(
                     controller: _phoneController,
                     labelText: 'Phone Number',
                     textInputType: TextInputType.number,
                     textInputAction: TextInputAction.next,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please Enter phone number';
+                      }
+                      return null;
+                    },
                   ),
-                  const SizedBox(
-                    height: 20,
+                  SizedBox(
+                    height: 20.h,
                   ),
                   BuildPasswordTextFormField(
                     labelText: 'Password',
                     textInputAction: TextInputAction.done,
                     controller: _passwordController,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Password is required';
+                      }
+                      return null;
+                    },
                   ),
-                  const SizedBox(height: 50,),
+                  SizedBox(
+                    height: 50.h,
+                  ),
                   Consumer(
                     builder: (context, ref, child) {
                       final authData = ref.watch(authProvider);
                       return BuildButton(
-                        onPressed: () async{
-                          final navigator = Navigator.of(context);
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return const AlertDialog(
-                                content: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    CircularProgressIndicator(),
-                                    SizedBox(height: 16),
-                                    Text("Creating account..."),
-                                  ],
-                                ),
-                              );
-                            },
-                          );
-                          final response = await authData.register(
-                            name: _nameController.text.trim(),
-                            email: _emailController.text.trim(),
-                            phone: _phoneController.text.trim(),
-                            password: _passwordController.text.trim(),
-                          );
-                          navigator.pop();
-                          if(response != "Registration Successful"){
-                            print('something went wrong');
-                          }else{
-                            navigator.push(MaterialPageRoute(builder: (_) => const HomeScreen(),));
+                        onPressed: () async {
+                          if(_formKey.currentState!.validate()){
+                            final navigator = Navigator.of(context);
+                            buildLoadingDialog(context, "Creating account...");
+                            final response = await authData.register(
+                              name: _nameController.text.trim(),
+                              email: _emailController.text.trim(),
+                              phone: _phoneController.text.trim(),
+                              password: _passwordController.text.trim(),
+                            );
+                            navigator.pop();
+                            if (response != "Registration Successful") {
+                              if(!context.mounted) return;
+                              buildErrorDialog(context, "Couldn't create account!");
+                            } else {
+                              navigator.push(MaterialPageRoute(
+                                builder: (_) => const MainScreen(),));
+                            }
                           }
                         },
                         buttonWidget: const Text('Create account'),
                       );
                     },
                   ),
-                  const SizedBox(height: 60,),
+                  SizedBox(
+                    height: 60.h,
+                  ),
                   Text(
                     'Already have an account?',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(
                       color: AppColor.darkColor.withOpacity(0.9),
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                   TextButton(
-                    onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => const LoginScreen(),));
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (
+                          _) => const LoginScreen(),));
                     },
                     child: const Text('Login instead'),
                   )
