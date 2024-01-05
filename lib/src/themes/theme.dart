@@ -7,6 +7,7 @@ class AppTheme {
   ThemeData lightMode = ThemeData(
     useMaterial3: true,
     brightness: Brightness.light,
+    splashColor: AppColor.primaryRed.withOpacity(0.5),
     colorScheme: const ColorScheme.light(
       background: AppColor.backGroundColor,
       primary: AppColor.primaryRed,
