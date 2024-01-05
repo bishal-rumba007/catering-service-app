@@ -9,9 +9,11 @@ class BuildButton extends StatelessWidget {
   final double? fontSize;
   final FontWeight? fontWeight;
   final ElevatedButtonTheme? buttonTheme;
+  final ButtonStyle? buttonStyle;
 
   const BuildButton({super.key, required this.onPressed,
     required this.buttonWidget,
+    this.buttonStyle,
     this.backgroundColor,
     this.textColor,
     this.fontSize,
@@ -23,9 +25,7 @@ class BuildButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-          backgroundColor: backgroundColor
-      ),
+      style: buttonStyle,
       child: buttonWidget,
     );
   }
