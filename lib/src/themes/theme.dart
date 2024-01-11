@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class AppTheme {
-  ThemeData lightMode = ThemeData(
+ThemeData lightMode = ThemeData(
     useMaterial3: true,
     brightness: Brightness.light,
     splashColor: AppColor.primaryRed.withOpacity(0.5),
@@ -78,7 +77,7 @@ class AppTheme {
         color: AppColor.darkColor,
       ),
       labelLarge: GoogleFonts.inter(
-        fontSize: 14.sp,
+        fontSize: 15.sp,
         fontWeight: FontWeight.w600,
         color: AppColor.darkColor,
       ),
@@ -88,7 +87,7 @@ class AppTheme {
         color: AppColor.darkColor,
       ),
       labelSmall: GoogleFonts.inter(
-        fontSize: 11.sp,
+        fontSize: 12.sp,
         fontWeight: FontWeight.w500,
         color: AppColor.darkColor,
       ),
@@ -96,7 +95,7 @@ class AppTheme {
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.resolveWith<Color>(
-          (Set<MaterialState> states) {
+              (Set<MaterialState> states) {
             if (states.contains(MaterialState.disabled)) {
               return AppColor.greyColor.withOpacity(0.5);
             }
@@ -114,7 +113,7 @@ class AppTheme {
           const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
         ),
         foregroundColor: MaterialStateProperty.resolveWith<Color>(
-          (Set<MaterialState> states) {
+              (Set<MaterialState> states) {
             if (states.contains(MaterialState.disabled)) {
               return Colors.grey;
             }
@@ -135,23 +134,23 @@ class AppTheme {
       ),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ElevatedButton.styleFrom(
-        minimumSize: Size(double.infinity, 50.h),
-        textStyle:  GoogleFonts.inter(
-          fontWeight: FontWeight.w600,
-          fontSize: 16.sp,
-          color: Colors.white,
-        ),
-        backgroundColor: AppColor.primaryRed,
-        foregroundColor: Colors.white,
-        elevation: 2,
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
-      )
+        style: ElevatedButton.styleFrom(
+          minimumSize: Size(double.infinity, 50.h),
+          textStyle:  GoogleFonts.inter(
+            fontWeight: FontWeight.w600,
+            fontSize: 16.sp,
+            color: Colors.white,
+          ),
+          backgroundColor: AppColor.primaryRed,
+          foregroundColor: Colors.white,
+          elevation: 2,
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+        )
     ),
 
     inputDecorationTheme: InputDecorationTheme(
       contentPadding:
-          EdgeInsets.symmetric(vertical: 14.h, horizontal: 16.w),
+      EdgeInsets.symmetric(vertical: 14.h, horizontal: 16.w),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8.r),
         borderSide: const BorderSide(color: AppColor.greyColor, width: 1.0),
@@ -184,12 +183,17 @@ class AppTheme {
       ),
     ),
     textButtonTheme: TextButtonThemeData(
-      style: TextButton.styleFrom(
-        textStyle: GoogleFonts.inter(
-          fontSize: 14.sp,
-          fontWeight: FontWeight.w600
+        style: TextButton.styleFrom(
+            textStyle: GoogleFonts.inter(
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w600
+            )
         )
-      )
-    )
-  );
-}
+    ),
+
+    listTileTheme: const ListTileThemeData(
+        style: ListTileStyle.drawer
+    ),
+
+    dropdownMenuTheme: DropdownMenuThemeData()
+);
