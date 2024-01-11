@@ -53,8 +53,6 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -204,5 +202,12 @@ class _LoginScreenState extends State<LoginScreen> {
     if(!_isChecked){
       box1.clear();
     }
+  }
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 }
