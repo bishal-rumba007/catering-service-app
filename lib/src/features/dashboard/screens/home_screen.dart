@@ -1,5 +1,6 @@
 import 'package:catering_service_app/src/common/common_export.dart';
 import 'package:catering_service_app/src/features/auth/screens/auth_provider.dart';
+import 'package:catering_service_app/src/features/dashboard/screens/widgets/my_drawer.dart';
 import 'package:catering_service_app/src/themes/color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,9 +24,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final authData = ref.watch(authProvider);
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         leading: Builder(
@@ -64,19 +63,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
         ],
       ),
-      drawer: Drawer(
-        child: Column(
-          children: [
-            SizedBox(height: 20.h,),
-            IconButton(
-              onPressed: () async{
-                await authData.logOut();
-              },
-              icon: const Icon(Icons.logout),
-            )
-          ],
-        ),
-      ),
+      drawer: const MyDrawer(),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 18.w),
         child: Column(
