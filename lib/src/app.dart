@@ -16,7 +16,7 @@ class MainApp extends StatelessWidget {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
-          theme: AppTheme().lightMode,
+          theme: lightMode,
           home: const StatusScreen(),
           navigatorKey: navigatorKey,
         );
