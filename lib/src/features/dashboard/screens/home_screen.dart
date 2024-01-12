@@ -1,5 +1,4 @@
 import 'package:catering_service_app/src/common/common_export.dart';
-import 'package:catering_service_app/src/features/auth/screens/auth_provider.dart';
 import 'package:catering_service_app/src/features/dashboard/screens/widgets/my_drawer.dart';
 import 'package:catering_service_app/src/themes/color.dart';
 import 'package:flutter/material.dart';
@@ -80,18 +79,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ),
             SizedBox(height: 10.h,),
             buildCategories(),
-            SizedBox(height: 20.h,),
-            Text(
-              'Hello Bishal Rumba',
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontSize: 18.sp,
-                color: AppColor.greyColor,
-              ),
-            ),
-            Text(
-              'Planning A Fabulous Event?',
-              style: Theme.of(context).textTheme.headlineSmall
-            )
+            // SizedBox(height: 20.h,),
+            // Text(
+            //   'Hello Bishal Rumba',
+            //   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            //     fontSize: 18.sp,
+            //     color: AppColor.greyColor,
+            //   ),
+            // ),
+            // Text(
+            //   'Planning A Fabulous Event?',
+            //   style: Theme.of(context).textTheme.headlineSmall
+            // )
           ],
         ),
       ),

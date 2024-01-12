@@ -1,5 +1,6 @@
 import 'package:catering_service_app/src/features/auth/screens/auth_provider.dart';
 import 'package:catering_service_app/src/features/menu/screens/create_menu.dart';
+import 'package:catering_service_app/src/features/menu/screens/menu_screen.dart';
 import 'package:catering_service_app/src/shared/data/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -55,7 +56,7 @@ class MyDrawer extends ConsumerWidget {
                 ),
               ),
               ListTile(
-                leading: const Icon(Icons.add_box_outlined),
+                trailing: const Icon(Icons.add_box_outlined),
                 title: const Text('Create Menu'),
                 onTap: () {
                   Navigator.pop(context);
@@ -68,7 +69,20 @@ class MyDrawer extends ConsumerWidget {
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.logout),
+                trailing: const Icon(Icons.arrow_forward_ios_outlined, size: 20,),
+                title: const Text('My Menus'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const MenuScreen(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                trailing: const Icon(Icons.logout),
                 title: const Text('Log out'),
                 onTap: () async{
                   await authData.logOut();
