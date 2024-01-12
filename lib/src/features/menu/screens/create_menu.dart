@@ -1,7 +1,7 @@
 import 'package:catering_service_app/src/common/common_export.dart';
 import 'package:catering_service_app/src/features/auth/screens/widgets/build_dialogs.dart';
-import 'package:catering_service_app/src/features/dashboard/screens/home_screen.dart';
 import 'package:catering_service_app/src/features/dashboard/screens/main_screen.dart';
+import 'package:catering_service_app/src/features/menu/data/menu_data_provider.dart';
 import 'package:catering_service_app/src/features/menu/data/menu_datasource.dart';
 import 'package:catering_service_app/src/features/menu/screens/widgets/input_chip_field.dart';
 import 'package:catering_service_app/src/shared/data/category_provider.dart';
@@ -20,9 +20,11 @@ class CreateMenuScreen extends ConsumerStatefulWidget {
 }
 
 class _CreateMenuScreenState extends ConsumerState<CreateMenuScreen> {
+  final priceController = TextEditingController();
 
   String selectedCategoryId = '';
   String selectedCategory = 'Select Category';
+  String price = '';
   List<String> starterMenu = <String>[];
   List<String> mainCourseMenu = <String>[];
   List<String> dessertMenu = <String>[];
@@ -95,7 +97,8 @@ class _CreateMenuScreenState extends ConsumerState<CreateMenuScreen> {
                       SizedBox(height: 20.h,),
                       const Text('Starter'),
                       SizedBox(height: 5.h),
-                      EditableChipFieldExample(
+                      EditableChipField(
+                        initialValues: starterMenu,
                         onChanged: (List<String> items) {
                           setState(() {
                             starterMenu = items;
@@ -105,7 +108,8 @@ class _CreateMenuScreenState extends ConsumerState<CreateMenuScreen> {
                       SizedBox(height: 20.h,),
                       const Text('Main Course'),
                       SizedBox(height: 5.h),
-                      EditableChipFieldExample(
+                      EditableChipField(
+                        initialValues: mainCourseMenu,
                         onChanged: (List<String> items) {
                           setState(() {
                             mainCourseMenu = items;
@@ -115,12 +119,20 @@ class _CreateMenuScreenState extends ConsumerState<CreateMenuScreen> {
                       SizedBox(height: 20.h,),
                       const Text('Dessert'),
                       SizedBox(height: 5.h),
-                      EditableChipFieldExample(
+                      EditableChipField(
+                        initialValues: dessertMenu,
                         onChanged: (List<String> items) {
                           setState(() {
                             dessertMenu = items;
                           });
                         },
+                      ),
+                      SizedBox(height: 20.h,),
+                      BuildTextField(
+                        controller: priceController,
+                        textInputType: TextInputType.number,
+                        labelText: 'Price',
+                        hintText: 'price per plate',
                       ),
                       SizedBox(height: 40.h,),
                       BuildButton(
@@ -129,6 +141,7 @@ class _CreateMenuScreenState extends ConsumerState<CreateMenuScreen> {
                           buildLoadingDialog(context, "Creating Menu....");
                           final response = await MenuDataSource().createMenu(
                               categoryId: selectedCategoryId,
+                              price: priceController.text.trim(),
                               categoryName: selectedCategory,
                               starterMenu: starterMenu,
                               mainCourseMenu: mainCourseMenu,
@@ -140,6 +153,7 @@ class _CreateMenuScreenState extends ConsumerState<CreateMenuScreen> {
                             buildErrorDialog(context, response);
                           }else{
                             if(!context.mounted) return;
+                            ref.refresh(menuProvider);
                             buildSuccessDialog(
                               context, response,
                               () {

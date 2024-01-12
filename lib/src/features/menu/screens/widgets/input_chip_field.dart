@@ -2,18 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
-class EditableChipFieldExample extends StatefulWidget {
+class EditableChipField extends StatefulWidget {
+  final List<String> initialValues;
   final ValueChanged<List<String>> onChanged;
-  const EditableChipFieldExample({super.key, required this.onChanged});
+  const EditableChipField({super.key, required this.onChanged, required this.initialValues});
 
   @override
-  EditableChipFieldExampleState createState() {
-    return EditableChipFieldExampleState();
+  EditableChipFieldState createState() {
+    return EditableChipFieldState();
   }
 }
 
-class EditableChipFieldExampleState extends State<EditableChipFieldExample> {
-  List<String> menuItems = <String>[];
+class EditableChipFieldState extends State<EditableChipField> {
+
+  late List<String> menuItems;
+
+  @override
+  void initState() {
+    super.initState();
+    menuItems = widget.initialValues ?? [];
+  }
 
   @override
   Widget build(BuildContext context) {
