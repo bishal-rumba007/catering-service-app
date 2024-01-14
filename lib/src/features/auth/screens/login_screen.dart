@@ -7,6 +7,7 @@ import 'package:catering_service_app/src/themes/export_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -19,6 +20,38 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  /// boolean variable to check if remember me is clicked or not
+  bool _isChecked = false;
+
+  late Box box1;
+
+  @override
+  void initState() {
+    super.initState();
+    createOpenBox();
+  }
+
+  /// create a box with this function below
+  void createOpenBox() async {
+    box1 = await Hive.openBox('loginData');
+    getData();
+  }
+
+
+  /// gets the stored data from the box and assigns it to the controllers
+  void getData() async {
+    if (box1.get('username') != null) {
+      _usernameController.text = box1.get('username');
+      _isChecked = true;
+      setState(() {});
+    }
+    if (box1.get('password') != null) {
+      _passwordController.text = box1.get('password');
+      _isChecked = true;
+      setState(() {});
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +108,37 @@ class _LoginScreenState extends State<LoginScreen> {
                       return null;
                     },
                   ),
+                  SizedBox(height: 14.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Checkbox(
+                        value: _isChecked,
+                        onChanged: (value) {
+                          _isChecked = !_isChecked;
+                          removeLoginInfo();
+                          setState(() {});
+                        },
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
+                        activeColor: AppColor.primaryRed,
+                        checkColor: Colors.white,
+                        side: const BorderSide(
+                          color: AppColor.greyColor,
+                          width: 1.4
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(3),
+                        ),
+                      ),
+                      SizedBox(width: 6.w,),
+                      Text("Remember Me",
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
                   SizedBox(height: 50.h),
                   Consumer(
                     builder: (context, ref, child) {
@@ -84,6 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
                          if(_formKey.currentState!.validate()){
                            final navigator = Navigator.of(context);
                            buildLoadingDialog(context, "Logging in..");
+                           login();
                            final response = await authData.login(
                              email: _usernameController.text.trim(),
                              password: _passwordController.text.trim(),
@@ -122,5 +187,27 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  /// adds the user info into (box) the local database (Hive)
+  void login() {
+    if (_isChecked) {
+      box1.put('username', _usernameController.value.text);
+      box1.put('password', _passwordController.value.text);
+    }
+  }
+
+  /// clears the box or removes the stored credentials.
+  void removeLoginInfo(){
+    if(!_isChecked){
+      box1.clear();
+    }
+  }
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 }
