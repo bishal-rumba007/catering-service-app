@@ -4,7 +4,6 @@ import 'package:catering_service_app/src/features/dashboard/screens/main_screen.
 import 'package:catering_service_app/src/features/menu/data/menu_data_provider.dart';
 import 'package:catering_service_app/src/features/menu/data/menu_datasource.dart';
 import 'package:catering_service_app/src/features/menu/domain/models/menu_model.dart';
-import 'package:catering_service_app/src/features/menu/screens/menu_screen.dart';
 import 'package:catering_service_app/src/features/menu/screens/widgets/input_chip_field.dart';
 import 'package:catering_service_app/src/shared/data/category_provider.dart';
 import 'package:catering_service_app/src/shared/domain/category_model.dart';
@@ -171,7 +170,8 @@ class _UpdateMenuScreenState extends ConsumerState<UpdateMenuScreen> {
                                       builder: (_) => const MainScreen(),
                                     ),
                                   );
-                                  ref.refresh(menuProvider);
+                                  ref.invalidate(menuProvider);
+                                  ref.read(menuProvider);
                                 },
                               );
                             }

@@ -1,5 +1,7 @@
 import 'package:catering_service_app/src/common/common_export.dart';
 import 'package:catering_service_app/src/features/dashboard/screens/widgets/my_drawer.dart';
+import 'package:catering_service_app/src/features/menu/data/menu_data_provider.dart';
+import 'package:catering_service_app/src/features/menu/domain/models/menu_model.dart';
 import 'package:catering_service_app/src/themes/color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,6 +18,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   int selectedCategory = 0;
+
   @override
   void initState() {
     super.initState();
@@ -23,6 +26,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final categoryData = ref.watch(menuProvider);
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -68,88 +72,122 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 20.h,),
+            SizedBox(
+              height: 20.h,
+            ),
             const CarouselCard(),
+            SizedBox(
+              height: 20.h,
+            ),
+            Text(
+              'Your Categories',
+              style: Theme.of(context)
+                  .textTheme
+                  .headlineSmall
+                  ?.copyWith(fontSize: 18.sp),
+            ),
+            SizedBox(
+              height: 10.h,
+            ),
+            Consumer(
+              builder: (context, ref, child) {
+                final categoryData = ref.watch(menuProvider);
+                return categoryData.when(
+                  data: (data) {
+                    return buildCategories(data);
+                  },
+                  error: (error, stackTrace) => Center(
+                    child: Text('$error'),
+                  ),
+                  loading: () => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              },
+            ),
             SizedBox(height: 20.h,),
             Text(
-              'Choose Your Categories',
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                fontSize: 18.sp
-              ),
+              'Popular Menus',
+              style: Theme.of(context)
+                  .textTheme
+                  .headlineSmall
+                  ?.copyWith(fontSize: 18.sp),
             ),
-            SizedBox(height: 10.h,),
-            buildCategories(),
-            // SizedBox(height: 20.h,),
-            // Text(
-            //   'Hello Bishal Rumba',
-            //   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            //     fontSize: 18.sp,
-            //     color: AppColor.greyColor,
-            //   ),
-            // ),
-            // Text(
-            //   'Planning A Fabulous Event?',
-            //   style: Theme.of(context).textTheme.headlineSmall
-            // )
+            GridView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+              ),
+              itemBuilder: (context, index) {
+                return Container(
+                  color: Colors.red,
+                  height: 160.h,
+                );
+              },
+            )
           ],
         ),
       ),
     );
   }
 
-  SizedBox buildCategories() {
+  SizedBox buildCategories(List<Menus> menuData) {
     return SizedBox(
-            height: 90.h,
-            width: double.infinity,
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              physics: const BouncingScrollPhysics(),
-              itemCount: 5,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      selectedCategory = index;
-                    });
-                    // Todo: add routing logic here
-                  },
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Card(
-                        margin: EdgeInsets.zero,
-                        elevation: 3.0,
-                        child: Container(
-                          height: 62.h,
-                          width: 60.h,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12.r),
-                            image: const DecorationImage(
-                              fit: BoxFit.cover,
-                              image: NetworkImage("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhjY_J2A-6p8NNQGmCLfsSbjR8RaRinc1p2g")
-                            ),
-                            border: index == selectedCategory ? Border.all(
-                              color: AppColor.primaryRed,
-                              width: 1.8.w,
-                            ) : const Border()
-                          ),
-                        ),
-                      ),
-                      const Spacer(),
-                      Text(
-                        'Wedding',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontSize: 14.sp,
-                          color: index == selectedCategory ? AppColor.primaryRed : AppColor.greyColor
-                        ),
-                      ),
-                    ],
+      height: 90.h,
+      width: double.infinity,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        physics: const BouncingScrollPhysics(),
+        itemCount: menuData.length,
+        itemBuilder: (context, index) {
+          return GestureDetector(
+            onTap: () {
+              setState(() {
+                selectedCategory = index;
+              });
+              // Todo: add routing logic here
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Card(
+                  margin: EdgeInsets.zero,
+                  elevation: 3.0,
+                  child: Container(
+                    height: 62.h,
+                    width: 60.h,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12.r),
+                        image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: NetworkImage(menuData[index].categoryImage)),
+                        border: index == selectedCategory
+                            ? Border.all(
+                          color: AppColor.primaryRed,
+                          width: 1.8.w,
+                        )
+                            : const Border()),
                   ),
-                );
-              },
-              separatorBuilder: (context, index) => SizedBox(width: 15.w,),
+                ),
+                const Spacer(),
+                Text(
+                  menuData[index].categoryName,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontSize: 14.sp,
+                      color: index == selectedCategory
+                          ? AppColor.primaryRed
+                          : AppColor.greyColor),
+                ),
+              ],
             ),
           );
+        },
+        separatorBuilder: (context, index) => SizedBox(
+          width: 15.w,
+        ),
+      ),
+    );
   }
 }
 
@@ -175,54 +213,60 @@ class CarouselCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: '30% OFF',
-                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          fontSize: 17.sp
-                        ),
-                      ),
-                      TextSpan(
-                        text: ' on all \n categories',
-                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          fontSize: 15.sp,
-                          fontWeight: FontWeight.w600
-                        ),
-                      )
-                    ]
-                  ),
+                  text: TextSpan(children: [
+                    TextSpan(
+                      text: '30% OFF',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineSmall
+                          ?.copyWith(fontSize: 17.sp),
+                    ),
+                    TextSpan(
+                      text: ' on all \n categories',
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          fontSize: 15.sp, fontWeight: FontWeight.w600),
+                    )
+                  ]),
                 ),
-                SizedBox(height: 12.h,),
+                SizedBox(
+                  height: 12.h,
+                ),
                 SizedBox(
                   width: 104.w,
                   height: 32.h,
                   child: BuildButton(
-                    onPressed: (){},
+                    onPressed: () {},
                     buttonStyle: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red,
                       padding: EdgeInsets.all(5.w),
-                      textStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white
-                      ),
+                      textStyle: Theme.of(context)
+                          .textTheme
+                          .bodySmall
+                          ?.copyWith(
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white),
                     ),
-                    buttonWidget: const Text('Accept Now',),
+                    buttonWidget: const Text(
+                      'Accept Now',
+                    ),
                   ),
                 )
               ],
             ),
-            SizedBox(width: 34.w,),
+            SizedBox(
+              width: 34.w,
+            ),
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.r),
-                  image: const DecorationImage(
-                    fit: BoxFit.cover,
-                    image: NetworkImage("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhjY_J2A-6p8NNQGmCLfsSbjR8RaRinc1p2g",),
-                  )
-                ),
+                    borderRadius: BorderRadius.circular(10.r),
+                    image: const DecorationImage(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhjY_J2A-6p8NNQGmCLfsSbjR8RaRinc1p2g",
+                      ),
+                    )),
               ),
             ),
           ],

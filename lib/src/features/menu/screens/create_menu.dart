@@ -153,7 +153,8 @@ class _CreateMenuScreenState extends ConsumerState<CreateMenuScreen> {
                             buildErrorDialog(context, response);
                           }else{
                             if(!context.mounted) return;
-                            ref.refresh(menuProvider);
+                            ref.invalidate(menuProvider);
+                            ref.read(menuProvider);
                             buildSuccessDialog(
                               context, response,
                               () {
