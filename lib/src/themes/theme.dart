@@ -13,7 +13,14 @@ ThemeData lightMode = ThemeData(
       secondary: AppColor.secondaryColor,
     ),
     iconTheme: const IconThemeData(
-      color: AppColor.primaryRed,
+      color: AppColor.darkColor,
+    ),
+    appBarTheme: AppBarTheme(
+      titleTextStyle: GoogleFonts.inter(
+        fontSize: 18.sp,
+        fontWeight: FontWeight.w600,
+        color: AppColor.darkColor
+      )
     ),
     textTheme: TextTheme(
       displayLarge: GoogleFonts.inter(
@@ -52,13 +59,13 @@ ThemeData lightMode = ThemeData(
         color: AppColor.darkColor,
       ),
       titleMedium: GoogleFonts.inter(
-        fontSize: 16.sp,
-        fontWeight: FontWeight.w500,
+        fontSize: 18.sp,
+        fontWeight: FontWeight.w600,
         color: AppColor.darkColor,
       ),
       titleSmall: GoogleFonts.inter(
-        fontSize: 14.sp,
-        fontWeight: FontWeight.w500,
+        fontSize: 16.sp,
+        fontWeight: FontWeight.w600,
         color: AppColor.darkColor,
       ),
       bodyLarge: GoogleFonts.inter(
@@ -69,7 +76,7 @@ ThemeData lightMode = ThemeData(
       bodyMedium: GoogleFonts.inter(
         fontSize: 14.sp,
         fontWeight: FontWeight.w500,
-        color: AppColor.darkColor.withOpacity(0.7),
+        color: AppColor.darkColor,
       ),
       bodySmall: GoogleFonts.inter(
         fontSize: 12.sp,
@@ -104,20 +111,20 @@ ThemeData lightMode = ThemeData(
         ),
         textStyle: MaterialStateProperty.all<TextStyle>(
           GoogleFonts.inter(
-            fontWeight: FontWeight.w800,
-            fontSize: 16,
-            color: AppColor.darkColor,
+            fontWeight: FontWeight.w600,
+            fontSize: 16.sp,
+            color: AppColor.greyColor,
           ),
         ),
         padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-          const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
+          EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
         ),
         foregroundColor: MaterialStateProperty.resolveWith<Color>(
               (Set<MaterialState> states) {
             if (states.contains(MaterialState.disabled)) {
-              return Colors.grey;
+              return AppColor.greyColor;
             }
-            return Colors.white; // Customize the button text color
+            return AppColor.greyColor; // Customize the button text color
           },
         ),
         side: MaterialStateProperty.all<BorderSide>(
@@ -128,7 +135,7 @@ ThemeData lightMode = ThemeData(
         ),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.0),
+            borderRadius: BorderRadius.circular(30.r),
           ),
         ),
       ),
