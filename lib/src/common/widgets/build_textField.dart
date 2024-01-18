@@ -103,6 +103,7 @@ class BuildTextField extends StatelessWidget {
     this.textInputType,
     this.textInputAction,
     this.suffixIconButton,
+    this.maxLine,
   }) : super(key: key);
 
   final TextEditingController controller;
@@ -112,6 +113,7 @@ class BuildTextField extends StatelessWidget {
   final TextInputType? textInputType;
   final TextInputAction? textInputAction;
   final IconButton? suffixIconButton;
+  final int? maxLine;
 
   @override
   Widget build(BuildContext context) {
@@ -122,6 +124,7 @@ class BuildTextField extends StatelessWidget {
         keyboardType: textInputType,
         textInputAction: textInputAction,
         validator: validator,
+        maxLines: maxLine,
         obscureText: false,
         decoration: InputDecoration(
           labelText: labelText,
