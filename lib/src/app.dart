@@ -1,4 +1,4 @@
-import 'package:catering_service_app/src/features/auth/screens/status_screen.dart';
+import 'package:catering_service_app/src/common/splash_screen.dart';
 import 'package:catering_service_app/src/themes/export_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,7 +17,7 @@ class MainApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
           theme: lightMode,
-          home: const StatusScreen(),
+          home: const SplashScreen(),
           navigatorKey: navigatorKey,
         );
       },
