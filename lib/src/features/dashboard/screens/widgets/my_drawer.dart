@@ -1,10 +1,15 @@
 import 'package:catering_service_app/src/features/auth/screens/auth_provider.dart';
 import 'package:catering_service_app/src/features/menu/screens/create_menu.dart';
 import 'package:catering_service_app/src/features/menu/screens/menu_screen.dart';
+import 'package:catering_service_app/src/features/notification/screens/notification_screen.dart';
+import 'package:catering_service_app/src/features/order/screens/order_screen.dart';
+import 'package:catering_service_app/src/features/profile/screens/profile_screen.dart';
 import 'package:catering_service_app/src/shared/data/user_provider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 
 
@@ -18,45 +23,73 @@ class MyDrawer extends ConsumerWidget {
     return Drawer(
       child: userData.when(
         data: (data) {
+          final username = data.firstName!.split(' ');
+          final String displayName = "${username[0][0]}${username[1][0]}";
           return ListView(
+            padding: EdgeInsets.zero,
             children: [
-              DrawerHeader(
-                decoration: data.imageUrl != null ? BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage(data.imageUrl!),
-                    fit: BoxFit.cover,
-                  ),
-                ) : BoxDecoration(
-                  color: Theme.of(context).primaryColor.withOpacity(0.4),
+              Container(
+                height: 200.h,
+                decoration: const BoxDecoration(
+                  color: Color(0xffffde8b),
                 ) ,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Stack(
                   children: [
-                    Text(
-                      data.firstName!,
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        fontSize: 16.sp,
+                    SvgPicture.asset(
+                      'assets/backdrops/food.svg',
+                      fit: BoxFit.cover,
+                    ),
+                    Container(
+                      color: Colors.white.withAlpha(300),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 16.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 50.h,),
+                          CircleAvatar(
+                            backgroundColor: Theme.of(context).secondaryHeaderColor,
+                            radius: 35,
+                            child: Text(
+                              displayName,
+                              style: Theme.of(context).textTheme.titleLarge,
+                            ),
+                          ),
+                          SizedBox(height: 10.h,),
+                          Text(
+                            data.firstName!,
+                            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                fontSize: 16.sp,
+                            ),
+                          ),
+                          Text(
+                            data.metadata!['role'],
+                            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    Text(
-                      data.metadata!['role'],
-                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    Text(
-                      data.metadata!['phone'],
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    Text(
-                      data.metadata!['email'],
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
+                    )
                   ],
                 ),
               ),
               ListTile(
-                trailing: const Icon(Icons.add_box_outlined),
+                leading: const Icon(CupertinoIcons.profile_circled),
+                title: const Text('Profile'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const ProfileScreen(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.add_box_outlined),
                 title: const Text('Create Menu'),
                 onTap: () {
                   Navigator.pop(context);
@@ -69,7 +102,7 @@ class MyDrawer extends ConsumerWidget {
                 },
               ),
               ListTile(
-                trailing: const Icon(Icons.arrow_forward_ios_outlined, size: 20,),
+                leading: const Icon(Icons.restaurant_menu, size: 24,),
                 title: const Text('My Menus'),
                 onTap: () {
                   Navigator.pop(context);
@@ -82,7 +115,38 @@ class MyDrawer extends ConsumerWidget {
                 },
               ),
               ListTile(
-                trailing: const Icon(Icons.logout),
+                leading: const Icon(CupertinoIcons.bell_fill),
+                title: const Text('Notification'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const NotificationScreen(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.shopping_cart),
+                title: const Text('Orders'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const OrderScreen(),
+                    ),
+                  );
+                },
+              ),
+              SizedBox(height: 10.h,),
+              Divider(
+                color: Colors.grey.shade400,
+              ),
+              SizedBox(height: 10.h,),
+              ListTile(
+                leading: const Icon(Icons.logout),
                 title: const Text('Log out'),
                 onTap: () async{
                   await authData.logOut();
