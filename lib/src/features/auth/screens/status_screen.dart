@@ -1,6 +1,6 @@
 import 'package:catering_service_app/src/features/auth/screens/auth_provider.dart';
 import 'package:catering_service_app/src/features/auth/screens/login_screen.dart';
-import 'package:catering_service_app/src/features/dashboard/screens/main_screen.dart';
+import 'package:catering_service_app/src/features/dashboard/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -19,7 +19,7 @@ class StatusScreen extends StatelessWidget {
                   if(data == null){
                     return const LoginScreen();
                   } else{
-                    return const MainScreen();
+                    return const HomeScreen();
                   }
                 },
                 error: (err, stack) => Center(child: Text('$err')),

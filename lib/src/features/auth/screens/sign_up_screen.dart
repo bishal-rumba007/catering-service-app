@@ -2,7 +2,7 @@ import 'package:catering_service_app/src/common/common_export.dart';
 import 'package:catering_service_app/src/features/auth/screens/auth_provider.dart';
 import 'package:catering_service_app/src/features/auth/screens/login_screen.dart';
 import 'package:catering_service_app/src/features/auth/screens/widgets/build_dialogs.dart';
-import 'package:catering_service_app/src/features/dashboard/screens/main_screen.dart';
+import 'package:catering_service_app/src/features/dashboard/screens/home_screen.dart';
 import 'package:catering_service_app/src/themes/export_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -131,7 +131,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               buildErrorDialog(context, "Couldn't create account!");
                             } else {
                               navigator.push(MaterialPageRoute(
-                                builder: (_) => const MainScreen(),));
+                                builder: (_) => const HomeScreen()));
                             }
                           }
                         },

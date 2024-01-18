@@ -1,6 +1,6 @@
 import 'package:catering_service_app/src/common/common_export.dart';
 import 'package:catering_service_app/src/features/auth/screens/widgets/build_dialogs.dart';
-import 'package:catering_service_app/src/features/dashboard/screens/main_screen.dart';
+import 'package:catering_service_app/src/features/dashboard/screens/home_screen.dart';
 import 'package:catering_service_app/src/features/menu/data/menu_data_provider.dart';
 import 'package:catering_service_app/src/features/menu/data/menu_datasource.dart';
 import 'package:catering_service_app/src/features/menu/domain/models/menu_model.dart';
@@ -167,7 +167,7 @@ class _UpdateMenuScreenState extends ConsumerState<UpdateMenuScreen> {
                                     () {
                                   navigator.push(
                                     MaterialPageRoute(
-                                      builder: (_) => const MainScreen(),
+                                      builder: (_) => const HomeScreen(),
                                     ),
                                   );
                                   ref.invalidate(menuProvider);
