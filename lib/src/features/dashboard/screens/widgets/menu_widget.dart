@@ -59,15 +59,14 @@ class PopularMenuCard extends StatelessWidget {
                     SizedBox(height: 6.h,),
                     Text(
                       '${menuData[index].categoryName} Menu',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15.sp
-                      ),
+                      style: Theme.of(context).textTheme.bodySmall
                     ),
                     const Spacer(),
                     Text(
                       'Per person',
-                      style: Theme.of(context).textTheme.bodySmall,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        fontSize: 10.sp
+                      ),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

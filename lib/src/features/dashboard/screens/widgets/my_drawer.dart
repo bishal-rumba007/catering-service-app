@@ -40,7 +40,7 @@ class MyDrawer extends ConsumerWidget {
                       fit: BoxFit.cover,
                     ),
                     Container(
-                      color: Colors.white.withAlpha(300),
+                      color: Colors.black.withOpacity(0.4),
                     ),
                     Padding(
                       padding: EdgeInsets.only(left: 16.w),
@@ -77,7 +77,10 @@ class MyDrawer extends ConsumerWidget {
               ),
               ListTile(
                 leading: const Icon(CupertinoIcons.profile_circled),
-                title: const Text('Profile'),
+                title: Text(
+                  'Profile',
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.push(
@@ -90,7 +93,10 @@ class MyDrawer extends ConsumerWidget {
               ),
               ListTile(
                 leading: const Icon(Icons.add_box_outlined),
-                title: const Text('Create Menu'),
+                title: Text(
+                  'Create Menu',
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.push(
@@ -103,7 +109,10 @@ class MyDrawer extends ConsumerWidget {
               ),
               ListTile(
                 leading: const Icon(Icons.restaurant_menu, size: 24,),
-                title: const Text('My Menus'),
+                title: Text(
+                  'My Menus',
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.push(
@@ -116,7 +125,10 @@ class MyDrawer extends ConsumerWidget {
               ),
               ListTile(
                 leading: const Icon(CupertinoIcons.bell_fill),
-                title: const Text('Notification'),
+                title: Text(
+                  'Notification',
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.push(
@@ -129,7 +141,10 @@ class MyDrawer extends ConsumerWidget {
               ),
               ListTile(
                 leading: const Icon(Icons.shopping_cart),
-                title: const Text('Orders'),
+                title: Text(
+                  'Orders',
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.push(
@@ -147,7 +162,10 @@ class MyDrawer extends ConsumerWidget {
               SizedBox(height: 10.h,),
               ListTile(
                 leading: const Icon(Icons.logout),
-                title: const Text('Log out'),
+                title: Text(
+                  'Log out',
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
                 onTap: () async{
                   await authData.logOut();
                 },
