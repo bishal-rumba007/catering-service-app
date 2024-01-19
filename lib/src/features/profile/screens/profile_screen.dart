@@ -1,168 +1,208 @@
+import 'package:catering_service_app/src/features/auth/screens/auth_provider.dart';
+import 'package:catering_service_app/src/features/auth/screens/widgets/build_dialogs.dart';
+import 'package:catering_service_app/src/features/profile/data/profile_datasource.dart';
+import 'package:catering_service_app/src/features/profile/data/update_image_provider.dart';
 import 'package:catering_service_app/src/features/profile/screens/widgets/option_card.dart';
+import 'package:catering_service_app/src/shared/data/image_provider.dart';
+import 'package:catering_service_app/src/shared/data/user_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 
-class ProfileScreen extends StatefulWidget {
+class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  ConsumerState<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
+    final userStream = ref.watch(userProvider);
+    final image = ref.watch(imageProvider);
     return Scaffold(
-      body: Stack(
-        children: [
-          Column(
+      body: userStream.when(
+        data: (data) {
+          final username = data.firstName!.split(' ');
+          final String displayName = "${username[0][0]}${username[1][0]}";
+          return Stack(
             children: [
-              SizedBox(
-                height: 280.h,
-                width: double.infinity,
-                child: Stack(
-                  children: [
-                    Container(
-                      height: 220.h,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: const Color(0xffffde8b),
-                        borderRadius: BorderRadius.circular(30.r),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(34.r),
-                        child: SvgPicture.asset(
-                          'assets/backdrops/food.svg',
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      left: 124.w,
-                      bottom: 5.h,
-                      child: CircleAvatar(
-                        radius: 70.r,
-                        backgroundImage: const NetworkImage(
-                          "https://pics.craiyon.com/2023-11-04/865f2123d71a45549b34aaf3fda83e7b.webp",
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      left: 226.w,
-                      bottom: 10.h,
-                      child: Container(
-                        height: 36.h,
-                        width: 36.h,
-                        decoration: BoxDecoration(
-                            color: const Color(0xfffec734).withOpacity(0.9),
-                            borderRadius: BorderRadius.circular(20.r)),
-                        child: Center(
-                          child: IconButton(
-                            onPressed: () {},
-                            icon: Icon(
-                              Icons.edit,
-                              color: Colors.grey.shade800,
+              Column(
+                children: [
+                  SizedBox(
+                    height: 280.h,
+                    width: double.infinity,
+                    child: Stack(
+                      children: [
+                        Container(
+                          height: 220.h,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: const Color(0xffffde8b),
+                            borderRadius: BorderRadius.circular(30.r),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(34.r),
+                            child: SvgPicture.asset(
+                              'assets/backdrops/food.svg',
+                              fit: BoxFit.cover,
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                    Positioned(
-                      right: 20.w,
-                      bottom: 70.h,
-                      child: Container(
-                        height: 32.h,
-                        width: 60.w,
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.8),
-                          borderRadius: BorderRadius.circular(10.r),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'EDIT',
-                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                fontWeight: FontWeight.w700
+                        data.imageUrl == null ? Positioned(
+                          left: 124.w,
+                          bottom: 5.h,
+                          child: CircleAvatar(
+                            backgroundColor: Theme.of(context).secondaryHeaderColor,
+                            radius: 70.r,
+                            child: Text(
+                              displayName,
+                              style: Theme.of(context).textTheme.titleLarge,
+                            ),
+                          ),
+                        ) : Positioned(
+                          left: 124.w,
+                          bottom: 5.h,
+                          child: CircleAvatar(
+                            radius: 70.r,
+                            backgroundImage: NetworkImage(
+                              data.imageUrl!,
                             ),
                           ),
                         ),
-                      ),
+                        Positioned(
+                          left: 226.w,
+                          bottom: 10.h,
+                          child: Container(
+                            height: 36.h,
+                            width: 36.h,
+                            decoration: BoxDecoration(
+                                color: const Color(0xfffec734).withOpacity(0.9),
+                                borderRadius: BorderRadius.circular(20.r)),
+                            child: Center(
+                              child: IconButton(
+                                onPressed: () async{
+                                  final ImagePicker picker = ImagePicker();
+                                  final myImage = await picker.pickImage(source: ImageSource.gallery);
+                                  print(myImage?.path);
+                                  if(myImage != null){
+                                    ref.read(updateImageProvider(myImage));
+                                  }else {
+                                    return;
+                                  }
+                                },
+                                icon: Icon(
+                                  Icons.edit,
+                                  color: Colors.grey.shade800,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          right: 20.w,
+                          bottom: 70.h,
+                          child: Container(
+                            height: 32.h,
+                            width: 60.w,
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.8),
+                              borderRadius: BorderRadius.circular(10.r),
+                            ),
+                            child: Center(
+                              child: Text(
+                                'EDIT',
+                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    fontWeight: FontWeight.w700
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
+                  SizedBox(height: 5.h,),
+                  Text(
+                    "${data.firstName}",
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  Text(
+                    "${data.metadata?['role']}",
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  Text(
+                    "${data.metadata!["email"]}",
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  Text(
+                    "${data.metadata!["phone"]}",
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  SizedBox(height: 20.h,),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 18.w),
+                    child: Column(
+                      children: [
+                        OptionCard(
+                          iconData: Icons.rate_review_outlined,
+                          text: 'Reviews & Feedback',
+                          subText: 'View reviews and feedbacks',
+                          onPressed: (){},
+                        ),
+                        SizedBox(height: 10.h,),
+                        OptionCard(
+                          iconData: Icons.history,
+                          text: 'History',
+                          subText: 'Service history',
+                          onPressed: (){},
+                        ),
+                        SizedBox(height: 10.h,),
+                        OptionCard(
+                          iconData: Icons.attach_money,
+                          text: 'Payment',
+                          subText: 'Payment history',
+                          onPressed: (){},
+                        ),
+                        SizedBox(height: 10.h,),
+                        OptionCard(
+                          iconData: Icons.help_outline,
+                          text: 'Support',
+                          subText: 'Request for help & support ',
+                          onPressed: (){},
+                        ),
+                        SizedBox(height: 10.h,),
+                        OptionCard(
+                          iconData: Icons.power_settings_new_rounded,
+                          text: 'Logout',
+                          subText: 'Sign out of the application',
+                          onPressed: (){
+                            ref.read(authProvider).logOut();
+                          },
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+              Positioned(
+                top: 0.0,
+                left: 0.0,
+                right: 0.0,
+                child: AppBar(
+                  centerTitle: true,
+                  backgroundColor: Colors.transparent,
+                  elevation: 0.0,
                 ),
               ),
-              SizedBox(height: 5.h,),
-              Text(
-                'Mothers Kitchen',
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              Text(
-                'Service Provider',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              Text(
-                'mother.kitchen@gmail.com',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              Text(
-                '+977-9821111567',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              SizedBox(height: 20.h,),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 18.w),
-                child: Column(
-                  children: [
-                    OptionCard(
-                      iconData: Icons.rate_review_outlined,
-                      text: 'Reviews & Feedback',
-                      subText: 'View reviews and feedbacks',
-                      onPressed: (){},
-                    ),
-                    SizedBox(height: 10.h,),
-                    OptionCard(
-                      iconData: Icons.history,
-                      text: 'History',
-                      subText: 'Service history',
-                      onPressed: (){},
-                    ),
-                    SizedBox(height: 10.h,),
-                    OptionCard(
-                      iconData: Icons.attach_money,
-                      text: 'Payment',
-                      subText: 'Payment history',
-                      onPressed: (){},
-                    ),
-                    SizedBox(height: 10.h,),
-                    OptionCard(
-                      iconData: Icons.help_outline,
-                      text: 'Support',
-                      subText: 'Request for help & support ',
-                      onPressed: (){},
-                    ),
-                    SizedBox(height: 10.h,),
-                    OptionCard(
-                      iconData: Icons.power_settings_new_rounded,
-                      text: 'Logout',
-                      subText: 'Sign out of the application',
-                      onPressed: (){},
-                    ),
-                  ],
-                ),
-              )
             ],
-          ),
-          Positioned(
-            top: 0.0,
-            left: 0.0,
-            right: 0.0,
-            child: AppBar(
-              centerTitle: true,
-              backgroundColor: Colors.transparent,
-              elevation: 0.0,
-            ),
-          ),
-        ],
+          );
+        },
+        error: (error, stackTrace) => Center(child: Text('$error'),),
+        loading: () => const Center(child: CircularProgressIndicator(),),
       )
     );
   }
