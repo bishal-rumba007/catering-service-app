@@ -5,24 +5,30 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 
 
-final userProvider = FutureProvider((ref) => UserProvider().getUser());
+final userProvider = StreamProvider((ref) => UserProvider().userStream());
 
 class UserProvider{
   final _userDb = FirebaseFirestore.instance.collection('users');
-  Future<types.User> getUser() async{
+
+  Stream<types.User> userStream(){
     final uid = FirebaseAuth.instance.currentUser!.uid;
+
     try{
-      final data = await _userDb.doc(uid).get();
-      return types.User(
-        id: data.id,
-        imageUrl: data['imageUrl'],
-        firstName: data['firstName'],
-        metadata: {
-          'email': data['metadata']['email'],
-          'phone': data['metadata']['phone'],
-          'role': data['metadata']['role'],
-        },
-      );
+      final data = _userDb.doc(uid).snapshots().map((event) {
+
+        final json = event.data() as Map<String, dynamic>;
+        return types.User(
+          id: event.id,
+          imageUrl: json['imageUrl'],
+          firstName: json['firstName'],
+          metadata: {
+            'email': json['metadata']['email'],
+            'phone': json['metadata']['phone'],
+            'role': json['metadata']['role'],
+          },
+        );
+      });
+      return data;
     } on FirebaseException catch (err){
       throw '${err.message}';
     }
