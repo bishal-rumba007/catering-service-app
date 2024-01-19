@@ -11,12 +11,13 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(375, 812),
+      designSize: const Size(393, 851),
       builder: (context, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
           theme: lightMode,
+          darkTheme: darkMode,
           home: const SplashScreen(),
           navigatorKey: navigatorKey,
         );
