@@ -59,7 +59,7 @@ class OrderCard extends StatelessWidget {
                       height: 26.h,
                       width: 200.w,
                       decoration: BoxDecoration(
-                        color: Colors.grey.shade300,
+                        color: Colors.grey.shade200,
                         borderRadius: BorderRadius.circular(16.r),
                       ),
                       child: Row(
@@ -100,7 +100,7 @@ class OrderCard extends StatelessWidget {
                       height: 30.h,
                       width: 132.w,
                       decoration: BoxDecoration(
-                        color: Colors.grey.shade300,
+                        color: Colors.grey.shade200,
                         borderRadius: BorderRadius.circular(16.r),
                       ),
                       child: Center(

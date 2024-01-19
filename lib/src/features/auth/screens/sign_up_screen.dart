@@ -45,8 +45,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       style: Theme
                           .of(context)
                           .textTheme
-                          .headlineSmall
-                          ?.copyWith(color: Colors.black),
+                          .headlineSmall,
                     ),
                   ),
                   SizedBox(
@@ -149,7 +148,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         .textTheme
                         .bodyMedium
                         ?.copyWith(
-                      color: AppColor.darkColor.withOpacity(0.9),
                       fontWeight: FontWeight.w600,
                     ),
                   ),

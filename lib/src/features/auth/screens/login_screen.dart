@@ -75,8 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       'Login',
                       style: Theme.of(context)
                           .textTheme
-                          .headlineSmall
-                          ?.copyWith(color: Colors.black),
+                          .headlineSmall,
                     ),
                   ),
                   SizedBox(
@@ -169,10 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(height: 60.h,),
                   Text(
                     'Don\'t have an account?',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppColor.darkColor.withOpacity(0.9),
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: Theme.of(context).textTheme.bodyMedium
                   ),
                   TextButton(
                     onPressed: (){

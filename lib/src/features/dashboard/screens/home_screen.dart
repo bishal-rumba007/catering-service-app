@@ -39,7 +39,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               },
               child: Container(
                 padding: EdgeInsets.all(16.w),
-                child: SvgPicture.asset("assets/icons/menu.svg"),
+                child: SvgPicture.asset(
+                  "assets/icons/menu.svg",
+                  colorFilter: ColorFilter.mode(
+                    Colors.grey.shade700,
+                    BlendMode.srcIn
+                  ),
+                ),
               ),
             );
           },
@@ -50,7 +56,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             fontWeight: FontWeight.w700,
             fontSize: 36.sp,
             color: AppColor.primaryRed,
-            letterSpacing: 1.8),
+            letterSpacing: 1.8,
+        ),
         actions: [
           InkWell(
             splashFactory: InkRipple.splashFactory,
@@ -61,7 +68,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 padding: EdgeInsets.all(5.5.w),
                 width: 40.h,
                 height: 40.h,
-                child: SvgPicture.asset("assets/icons/search.svg"),
+                child: SvgPicture.asset(
+                    "assets/icons/search.svg",
+                  colorFilter: ColorFilter.mode(
+                      Colors.grey.shade700,
+                      BlendMode.srcIn
+                  ),
+                ),
               ),
             ),
           ),

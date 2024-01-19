@@ -42,10 +42,16 @@ class OptionCard extends StatelessWidget {
                       Text(
                         text,
                         textAlign: TextAlign.start,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.inversePrimary
+                        ),
                       ),
                       Text(
                         subText,
                         textAlign: TextAlign.start,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: Theme.of(context).colorScheme.inversePrimary
+                        ),
                       ),
                     ],
                   ),

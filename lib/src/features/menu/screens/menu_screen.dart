@@ -164,7 +164,7 @@ class _MenuCardState extends State<MenuCard> {
                               showDragHandle: true,
                               isScrollControlled: true,
                               context: context,
-                              backgroundColor: Colors.white,
+                              backgroundColor: Theme.of(context).colorScheme.background,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.vertical(
                                     top: Radius.circular(20.r)),
@@ -181,12 +181,7 @@ class _MenuCardState extends State<MenuCard> {
                                         ExpansionTile(
                                           title: Text(
                                             'Starters',
-                                            style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                              fontSize: 16.0,
-                                              fontWeight: FontWeight.bold,
-                                            ),
+                                            style: Theme.of(context).textTheme.bodyLarge
                                           ),
                                           children: [
                                             for (String item
@@ -205,12 +200,7 @@ class _MenuCardState extends State<MenuCard> {
                                         ExpansionTile(
                                           title: Text(
                                             'Main Course',
-                                            style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                              fontSize: 16.0,
-                                              fontWeight: FontWeight.bold,
-                                            ),
+                                            style: Theme.of(context).textTheme.bodyLarge
                                           ),
                                           children: [
                                             for (String item
@@ -229,12 +219,7 @@ class _MenuCardState extends State<MenuCard> {
                                         ExpansionTile(
                                           title: Text(
                                             'Desserts',
-                                            style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                              fontSize: 16.0,
-                                              fontWeight: FontWeight.bold,
-                                            ),
+                                              style: Theme.of(context).textTheme.bodyLarge
                                           ),
                                           children: [
                                             for (String item
