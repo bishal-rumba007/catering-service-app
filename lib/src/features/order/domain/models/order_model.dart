@@ -1,8 +1,16 @@
 
+enum OrderStatus {
+  pending,
+  accepted,
+  rejected,
+  completed,
+}
 
 class OrderModel {
+  final String orderId;
   final OrderDetail orderDetail;
   final String advancePayment;
+  final String price;
   final String categoryId;
   final String categoryName;
   final String categoryImage;
@@ -12,10 +20,13 @@ class OrderModel {
   final List<String>? starterMenu;
   final List<String>? mainCourseMenu;
   final List<String>? dessertMenu;
+  final OrderStatus orderStatus;
 
   OrderModel({
+    required this.orderId,
     required this.orderDetail,
     required this.advancePayment,
+    required this.price,
     required this.categoryId,
     required this.categoryName,
     required this.categoryImage,
@@ -25,12 +36,15 @@ class OrderModel {
     this.starterMenu,
     this.mainCourseMenu,
     this.dessertMenu,
+    required this.orderStatus
   });
 
   factory OrderModel.fromJson(Map<String, dynamic> json) {
     return OrderModel(
+      orderId: json['orderId'] as String,
       orderDetail: OrderDetail.fromJson(json['orderInfo']),
       advancePayment: json['advancePayment'] as String,
+      price: json['price'] as String,
       categoryId: json['categoryId'] as String,
       categoryName: json['categoryName'] as String,
       categoryImage: json['categoryImage'],
@@ -40,6 +54,7 @@ class OrderModel {
       starterMenu: List<String>.from(json['starterMenu'] as List<dynamic>),
       mainCourseMenu: List<String>.from(json['mainCourseMenu'] as List<dynamic>),
       dessertMenu: List<String>.from(json['dessertMenu'] as List<dynamic>),
+      orderStatus: OrderStatus.values[json['orderStatus'] as int],
     );
   }
 
@@ -47,14 +62,17 @@ class OrderModel {
     return {
       'orderDetail': orderDetail.toJson(),
       'advancePayment': advancePayment,
+      'price': price,
       'categoryId': categoryId,
       'categoryName': categoryName,
+      'categoryImage': categoryImage,
       'catererId': catererId,
       'menuId': menuId,
       'menuName': menuName,
       'starterMenu': starterMenu,
       'mainCourseMenu': mainCourseMenu,
       'dessertMenu': dessertMenu,
+      'orderStatus': orderStatus.index,
     };
   }
 }
