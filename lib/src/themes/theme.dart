@@ -16,6 +16,7 @@ ThemeData darkMode = ThemeData(
     color: Colors.white,
   ),
   appBarTheme: AppBarTheme(
+    backgroundColor: Colors.grey.shade900,
     titleTextStyle: GoogleFonts.inter(
       fontSize: 18.sp,
       fontWeight: FontWeight.w600,
