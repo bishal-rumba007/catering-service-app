@@ -1,5 +1,6 @@
 import 'package:catering_service_app/src/features/order/domain/models/order_model.dart';
 import 'package:catering_service_app/src/features/order/screens/order_detail_screen.dart';
+import 'package:catering_service_app/src/features/order/screens/widgets/common_function.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -13,6 +14,7 @@ class OrderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final totalPrice = double.parse(order.price) * double.parse(order.orderDetail.totalGuests);
     return InkWell(
       onTap: () {
         Navigator.push(
@@ -65,7 +67,7 @@ class OrderCard extends StatelessWidget {
                       child: Row(
                         children: [
                           Text(
-                            'Rs. 1100/person',
+                            'Rs. ${double.parse(order.price)}/person',
                             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                 fontSize: 13.sp,
                                 fontWeight: FontWeight.w600
@@ -86,7 +88,7 @@ class OrderCard extends StatelessWidget {
                     ),
                     const Spacer(),
                     Text(
-                      'Lorem Ipsum dolor sit amet. asd as ',
+                      order.orderDetail.dietaryPref,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           fontSize: 13.sp,
                           fontWeight: FontWeight.w600
@@ -105,7 +107,7 @@ class OrderCard extends StatelessWidget {
                       ),
                       child: Center(
                         child: Text(
-                          'Total 44k Rs.',
+                          'Total ${formatTotalPrice(totalPrice)} Rs.',
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ),
