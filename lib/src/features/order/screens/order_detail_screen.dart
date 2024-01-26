@@ -1,19 +1,22 @@
 import 'package:catering_service_app/src/common/common_export.dart';
+import 'package:catering_service_app/src/features/order/data/order_provider.dart';
 import 'package:catering_service_app/src/features/order/domain/models/order_model.dart';
+import 'package:catering_service_app/src/features/order/screens/widgets/common_function.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
 
-class OrderDetailScreen extends StatefulWidget {
+class OrderDetailScreen extends ConsumerStatefulWidget {
   final OrderModel order;
   const OrderDetailScreen({super.key, required this.order});
 
   @override
-  State<OrderDetailScreen> createState() => _OrderDetailScreenState();
+  ConsumerState<OrderDetailScreen> createState() => _OrderDetailScreenState();
 }
 
-class _OrderDetailScreenState extends State<OrderDetailScreen> {
+class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
   final _textController = TextEditingController();
   late String formattedDate;
   @override
@@ -25,6 +28,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
   }
   @override
   Widget build(BuildContext context) {
+    final totalPrice = double.parse(widget.order.price) * double.parse(widget.order.orderDetail.totalGuests);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Order Detail'),
@@ -77,7 +81,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Rs. 1100',
+                              'Rs. ${widget.order.price}',
                               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                                 color: Theme.of(context).primaryColor,
                               ),
@@ -149,7 +153,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                   ),
                                 ),
                                 Text(
-                                  'Rs. 44k',
+                                  'Rs. ${formatTotalPrice(totalPrice)}',
                                   style: Theme.of(context).textTheme.bodyLarge,
                                 ),
                               ],
@@ -225,7 +229,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                           ),
                         ),
                         SizedBox(height: 30.h,),
-                        Row(
+                        widget.order.orderStatus.index == 1 ? const SizedBox() : Row(
                           children: [
                             Expanded(
                               child: OutlinedButton(
@@ -236,7 +240,10 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                             SizedBox(width: 16.w,),
                             Expanded(
                               child: BuildButton(
-                                onPressed: (){},
+                                onPressed: (){
+                                  setState(() {});
+                                  ref.read(acceptOrderProvider(widget.order.orderId));
+                                },
                                 buttonWidget: const Text('Accept'),
                               ),
                             )
