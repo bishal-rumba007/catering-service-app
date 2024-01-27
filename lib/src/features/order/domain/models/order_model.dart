@@ -1,4 +1,6 @@
 
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+
 enum OrderStatus {
   pending,
   accepted,
@@ -21,6 +23,7 @@ class OrderModel {
   final List<String>? mainCourseMenu;
   final List<String>? dessertMenu;
   final OrderStatus orderStatus;
+  final types.User user;
 
   OrderModel({
     required this.orderId,
@@ -36,7 +39,8 @@ class OrderModel {
     this.starterMenu,
     this.mainCourseMenu,
     this.dessertMenu,
-    required this.orderStatus
+    required this.orderStatus,
+    required this.user,
   });
 
   factory OrderModel.fromJson(Map<String, dynamic> json) {
@@ -55,6 +59,7 @@ class OrderModel {
       mainCourseMenu: List<String>.from(json['mainCourseMenu'] as List<dynamic>),
       dessertMenu: List<String>.from(json['dessertMenu'] as List<dynamic>),
       orderStatus: OrderStatus.values[json['orderStatus'] as int],
+      user: json['user'],
     );
   }
 
