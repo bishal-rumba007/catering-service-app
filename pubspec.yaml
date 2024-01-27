@@ -44,6 +44,7 @@ dependencies:
   cloud_firestore: ^4.13.6
   flutter_firebase_chat_core: ^1.6.7
   flutter_chat_types: ^3.6.2
+  flutter_chat_ui: ^1.6.10
   flutter_riverpod: ^2.4.9
   flutter_screenutil: ^5.9.0
   flutter_svg: ^2.0.9
