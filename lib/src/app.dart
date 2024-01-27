@@ -11,7 +11,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(393, 851),
+      designSize: const Size(412, 915),
       builder: (context, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
