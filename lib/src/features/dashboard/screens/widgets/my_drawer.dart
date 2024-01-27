@@ -19,7 +19,7 @@ class MyDrawer extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authData = ref.watch(authProvider);
-    final userData = ref.watch(userProvider);
+    final userData = ref.watch(singleUserProvider);
     return Drawer(
       child: userData.when(
         data: (data) {
@@ -40,7 +40,7 @@ class MyDrawer extends ConsumerWidget {
                       fit: BoxFit.cover,
                     ),
                     Container(
-                      color: Colors.black.withOpacity(0.4),
+                      color: Colors.black.withOpacity(0.25),
                     ),
                     Padding(
                       padding: EdgeInsets.only(left: 16.w),
