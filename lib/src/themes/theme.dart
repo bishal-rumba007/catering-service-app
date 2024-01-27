@@ -308,6 +308,7 @@ ThemeData lightMode = ThemeData(
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
+        disabledBackgroundColor: AppColor.primaryRed.withOpacity(0.5),
     minimumSize: Size(double.infinity, 50.h),
     textStyle: GoogleFonts.inter(
       fontWeight: FontWeight.w600,
