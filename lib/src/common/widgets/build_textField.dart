@@ -1,7 +1,6 @@
 import 'package:catering_service_app/src/themes/export_themes.dart';
 import 'package:flutter/material.dart';
 
-
 class BuildTextFormField extends StatelessWidget {
   const BuildTextFormField({
     Key? key,
@@ -25,16 +24,16 @@ class BuildTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        controller: controller,
-        keyboardType: textInputType,
-        textInputAction: textInputAction,
-        validator: validator,
-        decoration: InputDecoration(
-          enabled: isEnabled,
-          labelText: labelText,
-          hintText: hintText,
-        ),
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      controller: controller,
+      keyboardType: textInputType,
+      textInputAction: textInputAction,
+      validator: validator,
+      decoration: InputDecoration(
+        enabled: isEnabled,
+        labelText: labelText,
+        hintText: hintText,
+      ),
     );
   }
 }
@@ -84,7 +83,9 @@ class _BuildPasswordTextFormFieldState
             });
           },
           icon: Icon(
-            isObscure ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+            isObscure
+                ? Icons.visibility_off_outlined
+                : Icons.visibility_outlined,
             color: isObscure ? Colors.grey.shade400 : AppColor.primaryRed,
           ),
         ),
@@ -104,6 +105,8 @@ class BuildTextField extends StatelessWidget {
     this.textInputAction,
     this.suffixIconButton,
     this.maxLine,
+    this.autoFocus = false,
+    this.isEnabled = true,
   }) : super(key: key);
 
   final TextEditingController controller;
@@ -114,22 +117,27 @@ class BuildTextField extends StatelessWidget {
   final TextInputAction? textInputAction;
   final IconButton? suffixIconButton;
   final int? maxLine;
+  final bool autoFocus;
+  final bool isEnabled;
 
   @override
   Widget build(BuildContext context) {
     /// return text form field because we need validator
     return TextFormField(
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        controller: controller,
-        keyboardType: textInputType,
-        textInputAction: textInputAction,
-        validator: validator,
-        maxLines: maxLine,
-        obscureText: false,
-        decoration: InputDecoration(
-          labelText: labelText,
-          hintText: hintText,
-          suffixIcon: suffixIconButton,
-        ));
+      enabled: isEnabled,
+      autofocus: autoFocus,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      controller: controller,
+      keyboardType: textInputType,
+      textInputAction: textInputAction,
+      validator: validator,
+      maxLines: maxLine,
+      obscureText: false,
+      decoration: InputDecoration(
+        labelText: labelText,
+        hintText: hintText,
+        suffixIcon: suffixIconButton,
+      ),
+    );
   }
 }
