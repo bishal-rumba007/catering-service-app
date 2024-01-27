@@ -21,7 +21,7 @@ class ProfileScreen extends ConsumerStatefulWidget {
 class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
-    final userStream = ref.watch(userProvider);
+    final userStream = ref.watch(singleUserProvider);
     final image = ref.watch(imageProvider);
     return Scaffold(
       body: userStream.when(
