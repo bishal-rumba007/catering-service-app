@@ -5,6 +5,7 @@ import 'package:catering_service_app/src/features/chat/screens/chat_screen.dart'
 import 'package:catering_service_app/src/features/order/data/order_provider.dart';
 import 'package:catering_service_app/src/features/order/domain/models/order_model.dart';
 import 'package:catering_service_app/src/features/order/screens/widgets/common_function.dart';
+import 'package:catering_service_app/src/themes/export_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -31,6 +32,7 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final orderDetail = ref.watch(orderDetailProvider(widget.orderId));
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -70,162 +72,189 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
                   maxChildSize: 1.0,
                   shouldCloseOnMinExtent: false,
                   builder: (context, scrollController) {
-                    return Card(
-                      elevation: 40,
-                      shape: RoundedRectangleBorder(
+                    return Container(
+                      padding: EdgeInsets.only(top: 20.h, left: 20.w, right: 20.w),
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.surface,
                           borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(30.r))),
-                      child: Container(
-                        padding:
-                            EdgeInsets.only(top: 18.h, left: 18.w, right: 18.w),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(30.r),
-                        )),
-                        child: ListView(
-                          controller: scrollController,
-                          children: [
-                            Text(
-                              '${data.menuName} Party',
-                              style: Theme.of(context).textTheme.headlineSmall,
+                        top: Radius.circular(30.r),
+                      ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: theme.colorScheme.onBackground.withOpacity(0.15),
+                              spreadRadius: 1.5,
+                              blurRadius: 8,
+                              offset: const Offset(0, -1),
                             ),
-                            SizedBox(
-                              height: 20.h,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Rs. ${data.price}',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineSmall
-                                      ?.copyWith(
-                                        color: Theme.of(context).primaryColor,
-                                      ),
+                          ]
+                      ),
+                      child: ListView(
+                        controller: scrollController,
+                        children: [
+                          Text(
+                            '${data.menuName} Party',
+                            style: Theme.of(context).textTheme.headlineSmall,
+                          ),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Rs. ${data.price}',
+                                style: theme
+                                    .textTheme
+                                    .headlineSmall
+                                    ?.copyWith(
+                                  color: AppColor.primaryRed,
                                 ),
-                                Container(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 8.w),
-                                  height: 34.h,
-                                  width: 100.w,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8.r),
-                                      border: Border.all(
-                                        color: Colors.grey.shade600,
-                                      ),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      const Icon(Icons.people),
-                                      SizedBox(
-                                        width: 8.w,
-                                      ),
-                                      Text(
-                                        data.orderDetail.totalGuests,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall
-                                            ?.copyWith(
-                                                fontSize: 13.sp,
-                                                fontWeight: FontWeight.w600),
-                                      )
-                                    ],
-                                  ),
+                              ),
+                              Container(
+                                padding:
+                                    EdgeInsets.symmetric(horizontal: 8.w),
+                                height: 34.h,
+                                width: 100.w,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8.r),
+                                    border: Border.all(
+                                      color: Colors.grey.shade600,
+                                    ),
                                 ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 20.h,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
+                                child: Row(
                                   children: [
-                                    Text(
-                                      'Date',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyLarge
-                                          ?.copyWith(
-                                              color: Colors.grey.shade600),
+                                    const Icon(Icons.people),
+                                    SizedBox(
+                                      width: 8.w,
                                     ),
                                     Text(
-                                      formattedDate,
-                                      style:
-                                          Theme.of(context).textTheme.bodyLarge,
+                                      data.orderDetail.totalGuests,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall
+                                          ?.copyWith(
+                                              fontSize: 13.sp,
+                                              fontWeight: FontWeight.w600),
                                     )
                                   ],
                                 ),
-                                Column(
-                                  children: [
-                                    Text(
-                                      'Staff',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyLarge
-                                          ?.copyWith(
-                                              color: Colors.grey.shade600),
-                                    ),
-                                    Text(
-                                      data.orderDetail.helpers,
-                                      style:
-                                          Theme.of(context).textTheme.bodyLarge,
-                                    )
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    Text(
-                                      'Total',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyLarge
-                                          ?.copyWith(
-                                              color: Colors.grey.shade600),
-                                    ),
-                                    Text(
-                                      'Rs. ${formatTotalPrice(totalPrice)}',
-                                      style:
-                                          Theme.of(context).textTheme.bodyLarge,
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              height: 25.h,
-                            ),
-                            BuildTextField(
-                              isEnabled: false,
-                              controller: _textController,
-                              maxLine: 2,
-                              labelText: 'Dietary Preferences',
-                            ),
-                            SizedBox(
-                              height: 20.h,
-                            ),
-                            Text(
-                              'Customer Details',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge
-                                  ?.copyWith(
-                                    decoration: TextDecoration.underline,
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                children: [
+                                  Text(
+                                    'Date',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge
+                                        ?.copyWith(
+                                            color: Colors.grey.shade600),
                                   ),
+                                  Text(
+                                    formattedDate,
+                                    style:
+                                        Theme.of(context).textTheme.bodyLarge,
+                                  )
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  Text(
+                                    'Staff',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge
+                                        ?.copyWith(
+                                            color: Colors.grey.shade600),
+                                  ),
+                                  Text(
+                                    data.orderDetail.helpers,
+                                    style:
+                                        Theme.of(context).textTheme.bodyLarge,
+                                  )
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  Text(
+                                    'Total',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge
+                                        ?.copyWith(
+                                            color: Colors.grey.shade600),
+                                  ),
+                                  Text(
+                                    'Rs. ${formatTotalPrice(totalPrice)}',
+                                    style:
+                                        Theme.of(context).textTheme.bodyLarge,
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            height: 25.h,
+                          ),
+                          BuildTextField(
+                            isEnabled: false,
+                            controller: _textController,
+                            maxLine: 2,
+                            labelText: 'Dietary Preferences',
+                          ),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          Text(
+                            'Customer Details',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge
+                                ?.copyWith(
+                                  decoration: TextDecoration.underline,
+                                ),
+                          ),
+                          SizedBox(
+                            height: 4.h,
+                          ),
+                          RichText(
+                            text: TextSpan(children: [
+                              TextSpan(
+                                text: 'Name     :  ',
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                              TextSpan(
+                                text: data.orderDetail.customerName,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15.sp),
+                              ),
+                            ],
                             ),
-                            SizedBox(
-                              height: 4.h,
-                            ),
-                            RichText(
-                              text: TextSpan(children: [
+                          ),
+                          SizedBox(
+                            height: 4.h,
+                          ),
+                          RichText(
+                            text: TextSpan(
+                              children: [
                                 TextSpan(
-                                  text: 'Name     :  ',
-                                  style: Theme.of(context).textTheme.bodyMedium,
+                                  text: 'Address :  ',
+                                  style:
+                                      Theme.of(context).textTheme.bodyMedium,
                                 ),
                                 TextSpan(
-                                  text: data.orderDetail.customerName,
+                                  text: data.orderDetail.customerAddress,
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyMedium
@@ -234,110 +263,86 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
                                           fontSize: 15.sp),
                                 ),
                               ],
-                              ),
                             ),
-                            SizedBox(
-                              height: 4.h,
+                          ),
+                          SizedBox(
+                            height: 4.h,
+                          ),
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: 'Phone    :  ',
+                                  style:
+                                      Theme.of(context).textTheme.bodyMedium,
+                                ),
+                                TextSpan(
+                                  text: data.orderDetail.customerPhone,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15.sp),
+                                ),
+                              ],
                             ),
-                            RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: 'Address :  ',
-                                    style:
-                                        Theme.of(context).textTheme.bodyMedium,
-                                  ),
-                                  TextSpan(
-                                    text: data.orderDetail.customerAddress,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium
-                                        ?.copyWith(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 15.sp),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 4.h,
-                            ),
-                            RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: 'Phone    :  ',
-                                    style:
-                                        Theme.of(context).textTheme.bodyMedium,
-                                  ),
-                                  TextSpan(
-                                    text: data.orderDetail.customerPhone,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium
-                                        ?.copyWith(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 15.sp),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 30.h,
-                            ),
-                            data.orderStatus.index == 1
-                                ? BuildButton(
-                                    onPressed: () async{
-                                      final navigator = Navigator.of(context);
-                                      final scaffoldMessage = ScaffoldMessenger.of(context);
-                                      final response = await ref.read(roomProvider).createRoom(data.user);
-                                      if(response != null){
-                                        navigator.push(
-                                          MaterialPageRoute(
-                                            builder: (_) => ChatScreen(room: response),
-                                          ),
-                                        );
-                                      }else{
-                                        scaffoldMessage.showSnackBar(
-                                          const SnackBar(duration: Duration(milliseconds: 1500) , content: Text("something went wrong")),
-                                        );
-                                      }
-                                    },
-                                    buttonWidget: const Text('Message'),
-                                  )
-                                : Row(
-                                    children: [
-                                      Expanded(
-                                        child: OutlinedButton(
-                                          onPressed: () {
-                                            buildRejectModal(context, data);
-                                          },
-                                          child: const Text('Decline'),
+                          ),
+                          SizedBox(
+                            height: 30.h,
+                          ),
+                          data.orderStatus.index == 1
+                              ? BuildButton(
+                                  onPressed: () async{
+                                    final navigator = Navigator.of(context);
+                                    final scaffoldMessage = ScaffoldMessenger.of(context);
+                                    final response = await ref.read(roomProvider).createRoom(data.user);
+                                    if(response != null){
+                                      navigator.push(
+                                        MaterialPageRoute(
+                                          builder: (_) => ChatScreen(room: response),
                                         ),
+                                      );
+                                    }else{
+                                      scaffoldMessage.showSnackBar(
+                                        const SnackBar(duration: Duration(milliseconds: 1500) , content: Text("something went wrong")),
+                                      );
+                                    }
+                                  },
+                                  buttonWidget: const Text('Message'),
+                                )
+                              : Row(
+                                  children: [
+                                    Expanded(
+                                      child: OutlinedButton(
+                                        onPressed: () {
+                                          buildRejectModal(context, data);
+                                        },
+                                        child: const Text('Decline'),
                                       ),
-                                      SizedBox(
-                                        width: 16.w,
+                                    ),
+                                    SizedBox(
+                                      width: 16.w,
+                                    ),
+                                    Expanded(
+                                      child: BuildButton(
+                                        onPressed: () async{
+                                          buildLoadingDialog(
+                                              context, 'Accepting');
+                                          ref.read(
+                                            acceptOrderProvider(data.orderId),
+                                          );
+                                          Navigator.pop(context);
+                                        },
+                                        buttonWidget: const Text('Accept'),
                                       ),
-                                      Expanded(
-                                        child: BuildButton(
-                                          onPressed: () async{
-                                            buildLoadingDialog(
-                                                context, 'Accepting');
-                                            ref.read(
-                                              acceptOrderProvider(data.orderId),
-                                            );
-                                            Navigator.pop(context);
-                                          },
-                                          buttonWidget: const Text('Accept'),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                          ],
-                        ),
+                                    )
+                                  ],
+                                ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                        ],
                       ),
                     );
                   },
