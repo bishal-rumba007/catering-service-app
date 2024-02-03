@@ -25,7 +25,7 @@ class OrderCard extends StatelessWidget {
         );
       },
       child: Card(
-        elevation: 1,
+        elevation: 0,
         child: Container(
           padding: EdgeInsets.all(10.h),
           height: 150.h,
