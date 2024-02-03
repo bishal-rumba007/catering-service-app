@@ -14,6 +14,7 @@ class OrderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final totalPrice = double.parse(order.price) * double.parse(order.orderDetail.totalGuests);
     return InkWell(
       onTap: () {
@@ -61,7 +62,7 @@ class OrderCard extends StatelessWidget {
                       height: 26.h,
                       width: 200.w,
                       decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
+                        color: theme.colorScheme.surfaceVariant,
                         borderRadius: BorderRadius.circular(16.r),
                       ),
                       child: Row(
@@ -102,7 +103,7 @@ class OrderCard extends StatelessWidget {
                       height: 30.h,
                       width: 132.w,
                       decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
+                        color: theme.colorScheme.surfaceVariant,
                         borderRadius: BorderRadius.circular(16.r),
                       ),
                       child: Center(
