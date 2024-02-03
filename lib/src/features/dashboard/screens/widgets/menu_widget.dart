@@ -45,7 +45,7 @@ class PopularMenuCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      height: 90.h,
+                      height: 110.h,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.vertical(
                             top: Radius.circular(12.r),
@@ -59,14 +59,12 @@ class PopularMenuCard extends StatelessWidget {
                     SizedBox(height: 6.h,),
                     Text(
                       '${menuData[index].categoryName} Menu',
-                      style: Theme.of(context).textTheme.bodySmall
+                      style: Theme.of(context).textTheme.bodyMedium
                     ),
                     const Spacer(),
                     Text(
                       'Per person',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        fontSize: 10.sp
-                      ),
+                      style: Theme.of(context).textTheme.labelSmall
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
