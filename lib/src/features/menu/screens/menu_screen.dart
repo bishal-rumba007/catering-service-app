@@ -242,12 +242,13 @@ class _MenuCardState extends State<MenuCard> {
                             );
                           },
                           child: Card(
-                            elevation: 2.0,
+                            elevation: 0,
                             child: Container(
                               padding: EdgeInsets.all(10.w),
                               height: 110.h,
                               width: double.infinity,
                               decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.surface,
                                 borderRadius: BorderRadius.circular(12.r),
                               ),
                               child: Row(
@@ -260,7 +261,9 @@ class _MenuCardState extends State<MenuCard> {
                                         image: DecorationImage(
                                             image: NetworkImage(
                                                 menu.categoryImage),
-                                            fit: BoxFit.cover)),
+                                            fit: BoxFit.cover,
+                                        ),
+                                    ),
                                   ),
                                   SizedBox(
                                     width: 14.w,
@@ -289,6 +292,7 @@ class _MenuCardState extends State<MenuCard> {
                                               color: Colors.grey.shade600,
                                             ),
                                       ),
+                                      SizedBox(height: 4.h,),
                                       Text(
                                         'Starting from',
                                         style: Theme.of(context)
@@ -299,6 +303,7 @@ class _MenuCardState extends State<MenuCard> {
                                               color: Colors.grey.shade600,
                                             ),
                                       ),
+                                      SizedBox(height: 4.h,),
                                       Text(
                                         'Rs. ${menu.price}',
                                         style: Theme.of(context)
