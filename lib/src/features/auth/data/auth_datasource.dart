@@ -1,7 +1,9 @@
+
 import 'package:catering_service_app/src/app.dart';
 import 'package:catering_service_app/src/features/auth/screens/login_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -21,7 +23,7 @@ class AuthDataSource{
           email: email,
           password: password
       );
-
+      final token = await FirebaseMessaging.instance.getToken();
       await FirebaseChatCore.instance.createUserInFirestore(
         types.User(
             firstName: fullName,
@@ -29,6 +31,7 @@ class AuthDataSource{
             metadata: {
               'email': email,
               'phone': phoneNumber,
+              'deviceToken': token,
             }
         ),
       );
@@ -40,10 +43,20 @@ class AuthDataSource{
 
   Future<String> userLogin({required String username, required String password}) async{
     try{
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: username,
           password: password
       );
+      final token = await FirebaseMessaging.instance.getToken();
+      final userData = await userDb.doc(credential.user!.uid).get();
+      await userDb.doc(credential.user!.uid).update({
+        'metadata': {
+          'email': userData['metadata']['email'],
+          'phone': userData['metadata']['phone'],
+          'role': userData['metadata']['role'],
+          'deviceToken': token,
+        }
+      });
       return 'Login Successful';
     } on FirebaseAuthException catch(err){
       return '${err.message}';
@@ -63,5 +76,4 @@ class AuthDataSource{
       return '${err.message}';
     }
   }
-
 }

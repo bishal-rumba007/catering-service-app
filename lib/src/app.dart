@@ -1,3 +1,4 @@
+import 'package:catering_service_app/src/common/common_export.dart';
 import 'package:catering_service_app/src/common/splash_screen.dart';
 import 'package:catering_service_app/src/themes/export_themes.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,8 @@ class MainApp extends StatelessWidget {
           darkTheme: darkMode,
           home: const SplashScreen(),
           navigatorKey: navigatorKey,
+          onGenerateRoute: RouteGenerator.generateRoute,
+          initialRoute: Routes.splashRoute,
         );
       },
     );

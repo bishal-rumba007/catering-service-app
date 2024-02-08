@@ -1,13 +1,9 @@
 import 'package:catering_service_app/src/common/common_export.dart';
-import 'package:catering_service_app/src/features/auth/screens/auth_provider.dart';
-import 'package:catering_service_app/src/features/auth/screens/login_screen.dart';
 import 'package:catering_service_app/src/features/auth/screens/widgets/build_dialogs.dart';
-import 'package:catering_service_app/src/features/dashboard/screens/home_screen.dart';
-import 'package:catering_service_app/src/themes/export_themes.dart';
+import 'package:catering_service_app/src/features/auth/screens/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -42,10 +38,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     alignment: Alignment.topLeft,
                     child: Text(
                       'Create an Account',
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .headlineSmall,
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
                   ),
                   SizedBox(
@@ -115,7 +108,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       final authData = ref.watch(authProvider);
                       return BuildButton(
                         onPressed: () async {
-                          if(_formKey.currentState!.validate()){
+                          if (_formKey.currentState!.validate()) {
                             final navigator = Navigator.of(context);
                             buildLoadingDialog(context, "Creating account...");
                             final response = await authData.register(
@@ -126,11 +119,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             );
                             navigator.pop();
                             if (response != "Registration Successful") {
-                              if(!context.mounted) return;
-                              buildErrorDialog(context, "Couldn't create account!");
+                              if (!context.mounted) return;
+                              buildErrorDialog(
+                                  context, "Couldn't create account!");
                             } else {
-                              navigator.push(MaterialPageRoute(
-                                builder: (_) => const HomeScreen()));
+                              navigator.pushNamed(Routes.homeRoute);
                             }
                           }
                         },
@@ -143,18 +136,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   Text(
                     'Already have an account?',
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
                   ),
                   TextButton(
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (
-                          _) => const LoginScreen(),));
+                      Navigator.pushNamed(context, Routes.loginRoute);
                     },
                     child: const Text('Login instead'),
                   )

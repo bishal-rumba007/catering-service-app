@@ -1,11 +1,14 @@
 import 'package:catering_service_app/src/common/common_export.dart';
 import 'package:catering_service_app/src/features/auth/screens/widgets/build_dialogs.dart';
+import 'package:catering_service_app/src/features/chat/data/chat_datasource.dart';
 import 'package:catering_service_app/src/features/chat/data/chat_provider.dart';
 import 'package:catering_service_app/src/features/chat/screens/chat_screen.dart';
+import 'package:catering_service_app/src/features/order/data/order_datasource.dart';
 import 'package:catering_service_app/src/features/order/data/order_provider.dart';
 import 'package:catering_service_app/src/features/order/domain/models/order_model.dart';
 import 'package:catering_service_app/src/features/order/screens/widgets/common_function.dart';
 import 'package:catering_service_app/src/themes/export_themes.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,6 +24,7 @@ class OrderDetailScreen extends ConsumerStatefulWidget {
 }
 
 class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
+  final formKey = GlobalKey<FormState>();
   final _textController = TextEditingController();
   final _reasonController = TextEditingController();
   late String formattedDate;
@@ -34,6 +38,7 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final orderDetail = ref.watch(orderDetailProvider(widget.orderId));
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
@@ -57,11 +62,11 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
                   height: 170.h,
                   width: 290.w,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12.r),
-                      image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: NetworkImage(data.categoryImage),
-                      ),
+                    borderRadius: BorderRadius.circular(12.r),
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(data.categoryImage),
+                    ),
                   ),
                 ),
               ),
@@ -73,21 +78,22 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
                   shouldCloseOnMinExtent: false,
                   builder: (context, scrollController) {
                     return Container(
-                      padding: EdgeInsets.only(top: 20.h, left: 20.w, right: 20.w),
+                      padding:
+                          EdgeInsets.only(top: 20.h, left: 20.w, right: 20.w),
                       decoration: BoxDecoration(
-                        color: theme.colorScheme.surface,
+                          color: theme.colorScheme.surface,
                           borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(30.r),
-                      ),
+                            top: Radius.circular(30.r),
+                          ),
                           boxShadow: [
                             BoxShadow(
-                              color: theme.colorScheme.onBackground.withOpacity(0.15),
+                              color: theme.colorScheme.onBackground
+                                  .withOpacity(0.15),
                               spreadRadius: 1.5,
                               blurRadius: 8,
                               offset: const Offset(0, -1),
                             ),
-                          ]
-                      ),
+                          ]),
                       child: ListView(
                         controller: scrollController,
                         children: [
@@ -103,23 +109,19 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
                             children: [
                               Text(
                                 'Rs. ${data.price}',
-                                style: theme
-                                    .textTheme
-                                    .headlineSmall
-                                    ?.copyWith(
+                                style: theme.textTheme.headlineSmall?.copyWith(
                                   color: AppColor.primaryRed,
                                 ),
                               ),
                               Container(
-                                padding:
-                                    EdgeInsets.symmetric(horizontal: 8.w),
+                                padding: EdgeInsets.symmetric(horizontal: 8.w),
                                 height: 34.h,
                                 width: 100.w,
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8.r),
-                                    border: Border.all(
-                                      color: Colors.grey.shade600,
-                                    ),
+                                  borderRadius: BorderRadius.circular(8.r),
+                                  border: Border.all(
+                                    color: Colors.grey.shade600,
+                                  ),
                                 ),
                                 child: Row(
                                   children: [
@@ -154,8 +156,7 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyLarge
-                                        ?.copyWith(
-                                            color: Colors.grey.shade600),
+                                        ?.copyWith(color: Colors.grey.shade600),
                                   ),
                                   Text(
                                     formattedDate,
@@ -171,8 +172,7 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyLarge
-                                        ?.copyWith(
-                                            color: Colors.grey.shade600),
+                                        ?.copyWith(color: Colors.grey.shade600),
                                   ),
                                   Text(
                                     data.orderDetail.helpers,
@@ -188,8 +188,7 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyLarge
-                                        ?.copyWith(
-                                            color: Colors.grey.shade600),
+                                        ?.copyWith(color: Colors.grey.shade600),
                                   ),
                                   Text(
                                     'Rs. ${formatTotalPrice(totalPrice)}',
@@ -214,32 +213,31 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
                           ),
                           Text(
                             'Customer Details',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyLarge
-                                ?.copyWith(
-                                  decoration: TextDecoration.underline,
-                                ),
+                            style:
+                                Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                      decoration: TextDecoration.underline,
+                                    ),
                           ),
                           SizedBox(
                             height: 4.h,
                           ),
                           RichText(
-                            text: TextSpan(children: [
-                              TextSpan(
-                                text: 'Name     :  ',
-                                style: Theme.of(context).textTheme.bodyMedium,
-                              ),
-                              TextSpan(
-                                text: data.orderDetail.customerName,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.copyWith(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 15.sp),
-                              ),
-                            ],
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: 'Name     :  ',
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
+                                TextSpan(
+                                  text: data.orderDetail.customerName,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15.sp),
+                                ),
+                              ],
                             ),
                           ),
                           SizedBox(
@@ -250,8 +248,7 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
                               children: [
                                 TextSpan(
                                   text: 'Address :  ',
-                                  style:
-                                      Theme.of(context).textTheme.bodyMedium,
+                                  style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                                 TextSpan(
                                   text: data.orderDetail.customerAddress,
@@ -273,8 +270,7 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
                               children: [
                                 TextSpan(
                                   text: 'Phone    :  ',
-                                  style:
-                                      Theme.of(context).textTheme.bodyMedium,
+                                  style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                                 TextSpan(
                                   text: data.orderDetail.customerPhone,
@@ -293,19 +289,31 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
                           ),
                           data.orderStatus.index == 1
                               ? BuildButton(
-                                  onPressed: () async{
+                                  onPressed: () async {
                                     final navigator = Navigator.of(context);
-                                    final scaffoldMessage = ScaffoldMessenger.of(context);
-                                    final response = await ref.read(roomProvider).createRoom(data.user);
-                                    if(response != null){
-                                      navigator.push(
-                                        MaterialPageRoute(
-                                          builder: (_) => ChatScreen(room: response),
-                                        ),
-                                      );
-                                    }else{
+                                    final currentUser = FirebaseAuth.instance.currentUser!.uid;
+                                    final scaffoldMessage =
+                                        ScaffoldMessenger.of(context);
+                                    final response = await ref
+                                        .read(roomProvider)
+                                        .createRoom(data.user);
+                                    final otherUser = response?.users.firstWhere((element) => element.id != currentUser);
+                                    if (response != null) {
+                                        navigator.push(
+                                          MaterialPageRoute(
+                                            builder: (_) => ChatScreen(
+                                              room: response,
+                                              name: otherUser!.firstName!,
+                                            ),
+                                          ),
+                                        );
+                                    } else {
                                       scaffoldMessage.showSnackBar(
-                                        const SnackBar(duration: Duration(milliseconds: 1500) , content: Text("something went wrong")),
+                                        const SnackBar(
+                                            duration:
+                                                Duration(milliseconds: 1500),
+                                            content:
+                                                Text("something went wrong")),
                                       );
                                     }
                                   },
@@ -326,7 +334,7 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
                                     ),
                                     Expanded(
                                       child: BuildButton(
-                                        onPressed: () async{
+                                        onPressed: () async {
                                           buildLoadingDialog(
                                               context, 'Accepting');
                                           ref.read(
@@ -370,34 +378,62 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
           padding: MediaQuery.of(context).viewInsets,
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 18.w),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                BuildTextField(
-                  maxLine: 3,
-                  autoFocus: true,
-                  controller: _reasonController,
-                  labelText: 'Reason',
-                  hintText: 'Enter reason for rejection',
-                ),
-                SizedBox(
-                  height: 30.h,
-                ),
-                BuildButton(
-                  onPressed: _reasonController.text.isEmpty
-                      ? null
-                      : () {
-                          buildLoadingDialog(context, 'Rejecting');
-                          ref.read(rejectOrderProvider(orderData.orderId));
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                        },
-                  buttonWidget: const Text('Submit'),
-                ),
-                SizedBox(
-                  height: 50.h,
-                )
-              ],
+            child: Form(
+              key: formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  BuildTextField(
+                    maxLine: 3,
+                    autoFocus: true,
+                    controller: _reasonController,
+                    labelText: 'Reason',
+                    hintText: 'Enter reason for rejection',
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter reason';
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(
+                    height: 30.h,
+                  ),
+                  BuildButton(
+                    onPressed: () async {
+                      final navigator = Navigator.of(context);
+                      if(formKey.currentState!.validate()){
+                        buildLoadingDialog(context, 'Rejecting');
+                        final response = await ref.read(
+                            rejectOrderProvider(orderData.orderId).future);
+                        if (response == 'Order Rejected') {
+                          await ChatDataSource().sendNotification(
+                            token: orderData.user.metadata?['deviceToken'],
+                            title: 'Order Rejected',
+                            message: 'Your order has been rejected',
+                            notificationData: {
+                              'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+                              'type': 'order',
+                              'route': 'notification',
+                            },
+                          );
+                          await OrderDataSource().rejectNotification(
+                            orderModel: orderData,
+                            reason: _reasonController.text.trim(),
+                          );
+                        }
+                        navigator.pop();
+                        navigator.pop();
+                        navigator.pop();
+                      }
+                    },
+                    buttonWidget: const Text('Submit'),
+                  ),
+                  SizedBox(
+                    height: 50.h,
+                  )
+                ],
+              ),
             ),
           ),
         );

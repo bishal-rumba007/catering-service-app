@@ -1,8 +1,8 @@
+
 import 'package:catering_service_app/src/common/common_export.dart';
 import 'package:catering_service_app/src/features/auth/screens/auth_provider.dart';
-import 'package:catering_service_app/src/features/auth/screens/sign_up_screen.dart';
 import 'package:catering_service_app/src/features/auth/screens/widgets/build_dialogs.dart';
-import 'package:catering_service_app/src/features/dashboard/screens/home_screen.dart';
+
 import 'package:catering_service_app/src/themes/export_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -123,8 +123,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         activeColor: AppColor.primaryRed,
                         checkColor: Colors.white,
                         side: const BorderSide(
-                          color: AppColor.greyColor,
-                          width: 1.4
+                            color: AppColor.greyColor,
+                            width: 1.4
                         ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(3),
@@ -140,39 +140,39 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   SizedBox(height: 50.h),
                   Consumer(
-                    builder: (context, ref, child) {
-                      final authData = ref.watch(authProvider);
-                     return BuildButton(
-                       onPressed: () async{
-                         if(_formKey.currentState!.validate()){
-                           final navigator = Navigator.of(context);
-                           buildLoadingDialog(context, "Logging in..");
-                           login();
-                           final response = await authData.login(
-                             email: _usernameController.text.trim(),
-                             password: _passwordController.text.trim(),
-                           );
-                           navigator.pop();
-                           if(response != 'Login Successful'){
-                             if(!context.mounted) return;
-                             buildErrorDialog(context, response);
-                           }else{
-                             navigator.push(MaterialPageRoute(builder: (_) => const HomeScreen(),));
-                           }
-                         }
-                       },
-                       buttonWidget: const Text('Login'),
-                     );
-                    }
+                      builder: (context, ref, child) {
+                        final authData = ref.watch(authProvider);
+                        return BuildButton(
+                          onPressed: () async{
+                            if(_formKey.currentState!.validate()){
+                              final navigator = Navigator.of(context);
+                              buildLoadingDialog(context, "Logging in..");
+                              login();
+                              final response = await authData.login(
+                                email: _usernameController.text.trim(),
+                                password: _passwordController.text.trim(),
+                              );
+                              navigator.pop();
+                              if(response != 'Login Successful'){
+                                if(!context.mounted) return;
+                                buildErrorDialog(context, response);
+                              }else{
+                                navigator.pushNamed(Routes.homeRoute);
+                              }
+                            }
+                          },
+                          buttonWidget: const Text('Login'),
+                        );
+                      }
                   ),
                   SizedBox(height: 60.h,),
                   Text(
-                    'Don\'t have an account?',
-                    style: Theme.of(context).textTheme.bodyMedium
+                      'Don\'t have an account?',
+                      style: Theme.of(context).textTheme.bodyMedium
                   ),
                   TextButton(
                     onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => const SignUpScreen(),));
+                      Navigator.pushNamed(context, Routes.registerRoute);
                     },
                     child: const Text('Create an account'),
                   )
@@ -202,8 +202,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
-    _usernameController.dispose();
-    _passwordController.dispose();
     super.dispose();
   }
 }

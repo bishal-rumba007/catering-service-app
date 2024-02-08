@@ -10,7 +10,7 @@ class OrderDataSource{
   final _userDb = FirebaseFirestore.instance.collection('users');
   final _categoryDb = FirebaseFirestore.instance.collection('categories');
   final _orderDb = FirebaseFirestore.instance.collection('orders');
-
+final _notificationDb = FirebaseFirestore.instance.collection('notifications');
 
   Stream<List<OrderModel>> getOrdersStream() {
     try {
@@ -67,6 +67,7 @@ class OrderDataSource{
           id: snapshot.id,
           firstName: json['firstName'],
           metadata: {
+            'deviceToken': json['metadata']['deviceToken'],
             'email': json['metadata']['email'],
             'phone': json['metadata']['phone'],
             'role': json['metadata']['role'],
@@ -119,8 +120,32 @@ class OrderDataSource{
 
   Future<String> rejectOrder({required String orderId}) async {
     try {
-      await _orderDb.doc(orderId).delete();
-      return 'Order rejected';
+      await _orderDb.doc(orderId).update({
+        'orderStatus': OrderStatus.rejected.index,
+      });
+      return 'Order Rejected';
+    } on FirebaseException catch (err) {
+      throw '$err';
+    }
+  }
+
+  Future<String> rejectNotification({required OrderModel orderModel, required String reason}) async {
+    try {
+      await _notificationDb.add({
+        'title': 'Order Cancelled',
+        'body': 'Your order for ${orderModel.menuName} has been cancelled',
+        'notificationType': 'order',
+        'orderId': orderModel.orderId,
+        'senderId': orderModel.orderDetail.customerId,
+        'receiverId': orderModel.catererId,
+        'status': 'unread',
+        'createdAt': DateTime.now().microsecondsSinceEpoch.toString(),
+        'data': {
+          'reason': reason,
+          'orderInfo': orderModel.toJson()
+        },
+      });
+      return 'Order cancelled';
     } on FirebaseException catch (err) {
       throw '$err';
     }

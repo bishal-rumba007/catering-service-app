@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:catering_service_app/src/features/chat/data/chat_datasource.dart';
 import 'package:catering_service_app/src/features/chat/data/chat_provider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -9,10 +10,12 @@ import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
-
 class ChatScreen extends StatelessWidget {
   final types.Room room;
-  const ChatScreen({super.key, required this.room});
+  final String name;
+
+  const ChatScreen(
+      {super.key, required this.room, required this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -20,18 +23,46 @@ class ChatScreen extends StatelessWidget {
       builder: (context, ref, child) {
         final isLoad = ref.watch(loadingProvider);
         return Scaffold(
+          appBar: AppBar(
+            automaticallyImplyLeading: true,
+            title: Text(name),
+          ),
           body: SafeArea(
             child: StreamBuilder<List<types.Message>>(
               initialData: const [],
               stream: FirebaseChatCore.instance.messages(room),
               builder: (context, snapshot) {
+                final currentUserName = room.users.firstWhere(
+                      (element) =>
+                  element.id ==
+                      FirebaseChatCore.instance.firebaseUser?.uid,
+                ).firstName;
+                final otherUser = room.users.firstWhere(
+                      (element) =>
+                  element.id !=
+                      FirebaseChatCore.instance.firebaseUser?.uid,
+                );
+                final deviceToken = otherUser.metadata?['deviceToken'];
                 return Chat(
                   messages: snapshot.data ?? [],
-                  onSendPressed: (value) {
+                  onSendPressed: (value) async {
                     FirebaseChatCore.instance.sendMessage(value, room.id);
+                    await ChatDataSource().sendNotification(
+                      token: deviceToken,
+                      title: '$currentUserName',
+                      message: value.text,
+                      notificationData: {
+                        'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+                        'id': '1',
+                        'room': room.id,
+                        'name': name,
+                        'type': 'chat',
+                        'route': 'chat',
+                      },
+                    );
                   },
                   isAttachmentUploading: isLoad,
-                  onAttachmentPressed: () async{
+                  onAttachmentPressed: () async {
                     final result = await ImagePicker().pickImage(
                       imageQuality: 70,
                       maxWidth: 1440,
@@ -44,7 +75,9 @@ class ChatScreen extends StatelessWidget {
 
                       try {
                         final imageName = DateTime.now().toIso8601String();
-                        final reference = FirebaseStorage.instance.ref().child('chatImage/$imageName');
+                        final reference = FirebaseStorage.instance
+                            .ref()
+                            .child('chatImage/$imageName');
                         await reference.putFile(file);
                         final uri = await reference.getDownloadURL();
 
@@ -59,14 +92,18 @@ class ChatScreen extends StatelessWidget {
                           room.id,
                         );
                         ref.read(loadingProvider.notifier).toggle();
-                      } catch(err){
+                      } catch (err) {
                         ref.read(loadingProvider.notifier).toggle();
                       }
                     }
                   },
                   showUserAvatars: true,
                   showUserNames: true,
-                  user: types.User(id: FirebaseChatCore.instance.firebaseUser?.uid ?? ""),
+                  theme: const DefaultChatTheme(
+                    primaryColor: Color(0xff0084ff),
+                  ),
+                  user: types.User(
+                      id: FirebaseChatCore.instance.firebaseUser?.uid ?? ""),
                   useTopSafeAreaInset: true,
                 );
               },

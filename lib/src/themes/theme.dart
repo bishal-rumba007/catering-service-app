@@ -1,4 +1,4 @@
-import 'package:catering_service_app/src/themes/export_themes.dart';
+import 'package:catering_service_app/src/themes/color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,6 +16,7 @@ ThemeData darkMode = ThemeData(
     surface: Colors.grey.shade800,
     onSurface: const Color(0xFFf5f5f5),
     surfaceVariant: Colors.grey.shade700,
+    inverseSurface: Colors.grey.shade50,
   ),
   iconTheme: const IconThemeData(
     color: Colors.white,
@@ -212,6 +213,7 @@ ThemeData lightMode = ThemeData(
     secondary: AppColor.secondaryColor,
     surface: Colors.white,
     surfaceVariant: AppColor.backGroundColor,
+    inverseSurface: Colors.grey.shade400,
   ),
   iconTheme: IconThemeData(
     color: AppColor.darkColor,
@@ -422,12 +424,12 @@ ThemeData lightMode = ThemeData(
     labelStyle: GoogleFonts.inter(
       fontSize: 14.sp,
       fontWeight: FontWeight.w600,
-      color: Colors.white,
+      color: AppColor.darkColor,
     ),
     secondaryLabelStyle: GoogleFonts.inter(
       fontSize: 14.sp,
       fontWeight: FontWeight.w600,
-      color: Colors.white,
+      color: AppColor.darkColor,
     ),
     shape: RoundedRectangleBorder(
       side: const BorderSide(

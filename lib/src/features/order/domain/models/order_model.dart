@@ -6,6 +6,7 @@ enum OrderStatus {
   accepted,
   rejected,
   completed,
+  cancelled,
 }
 
 class OrderModel {
@@ -123,8 +124,8 @@ class OrderDetail {
       'customerId': customerId,
       'customerName': customerName,
       'customerAddress': customerAddress,
-      'customerPhone': customerPhone,
-      'dietaryPref': dietaryPref,
+      'contact': customerPhone,
+      'dietryPreference': dietaryPref,
       'helpers': helpers,
       'orderDate': orderDate,
       'totalGuests': totalGuests,
