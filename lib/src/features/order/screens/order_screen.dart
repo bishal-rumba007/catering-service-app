@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-
-
 class OrderScreen extends ConsumerWidget {
   const OrderScreen({super.key});
 
@@ -23,9 +21,11 @@ class OrderScreen extends ConsumerWidget {
           final orderList = data.where((element) {
             return element.orderStatus != OrderStatus.rejected && element.orderStatus != OrderStatus.cancelled;
           }).toList();
-          return orderList.isEmpty ? Text(
-            'No orders yet',
-            style: Theme.of(context).textTheme.bodyMedium
+          return orderList.isEmpty ? Center(
+            child: Text(
+              'No orders yet',
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
           ) : Padding(
             padding: EdgeInsets.symmetric(horizontal: 10.w),
             child: ListView.separated(

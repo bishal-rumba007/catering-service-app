@@ -32,7 +32,7 @@ class MyDrawer extends ConsumerWidget {
                 height: 200.h,
                 decoration: const BoxDecoration(
                   color: Color(0xffffde8b),
-                ) ,
+                ),
                 child: Stack(
                   children: [
                     SvgPicture.asset(
@@ -121,6 +121,17 @@ class MyDrawer extends ConsumerWidget {
                       builder: (_) => const MenuScreen(),
                     ),
                   );
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.chat_bubble_outline, size: 24,),
+                title: Text(
+                  'Recent Chat',
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/recent-chat');
                 },
               ),
               ListTile(

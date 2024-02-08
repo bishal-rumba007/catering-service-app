@@ -10,31 +10,28 @@ class OrderDataSource{
   final _userDb = FirebaseFirestore.instance.collection('users');
   final _categoryDb = FirebaseFirestore.instance.collection('categories');
   final _orderDb = FirebaseFirestore.instance.collection('orders');
-final _notificationDb = FirebaseFirestore.instance.collection('notifications');
+  final _notificationDb = FirebaseFirestore.instance.collection('notifications');
 
   Stream<List<OrderModel>> getOrdersStream() {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
     try {
-      return _userDb.doc(uid).snapshots().asyncMap((userData) async {
-        final userId = userData.id;
-
-        final response = await _orderDb
-            .where('catererId', isEqualTo: userId)
-            .get();
-
-        final orderList = await Future.wait(response.docs.map((doc) async {
-          final json = doc.data();
+      final data =
+      _orderDb.where('catererId', isEqualTo: uid).snapshots();
+      final response = data.asyncMap((event) async {
+        final data = Future.wait(event.docs.map((e) async {
+          final json = e.data();
           final categoryImage = await getCategoryImage(json['categoryId']);
           final userData = await getUserDetail(json['orderInfo']['customerId']);
           return OrderModel.fromJson({
             ...json,
-            'orderId': doc.id,
+            'orderId': e.id,
             'categoryImage': categoryImage,
             'user': userData,
           });
-        }));
-
-        return orderList;
+        }).toList());
+        return data;
       });
+      return response;
     } on FirebaseException catch (error) {
       throw '$error';
     }
