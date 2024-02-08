@@ -1,8 +1,8 @@
 import 'package:catering_service_app/src/common/common_export.dart';
 import 'package:catering_service_app/src/features/auth/screens/widgets/build_dialogs.dart';
-import 'package:catering_service_app/src/features/chat/data/chat_datasource.dart';
 import 'package:catering_service_app/src/features/chat/data/chat_provider.dart';
 import 'package:catering_service_app/src/features/chat/screens/chat_screen.dart';
+import 'package:catering_service_app/src/features/notification/data/notification_datasource.dart';
 import 'package:catering_service_app/src/features/order/data/order_datasource.dart';
 import 'package:catering_service_app/src/features/order/data/order_provider.dart';
 import 'package:catering_service_app/src/features/order/domain/models/order_model.dart';
@@ -407,7 +407,7 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
                         final response = await ref.read(
                             rejectOrderProvider(orderData.orderId).future);
                         if (response == 'Order Rejected') {
-                          await ChatDataSource().sendNotification(
+                          await NotificationDataSource().sendNotification(
                             token: orderData.user.metadata?['deviceToken'],
                             title: 'Order Rejected',
                             message: 'Your order has been rejected',

@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:catering_service_app/src/features/chat/data/chat_datasource.dart';
 import 'package:catering_service_app/src/features/chat/data/chat_provider.dart';
+import 'package:catering_service_app/src/features/notification/data/notification_datasource.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -47,7 +47,7 @@ class ChatScreen extends StatelessWidget {
                   messages: snapshot.data ?? [],
                   onSendPressed: (value) async {
                     FirebaseChatCore.instance.sendMessage(value, room.id);
-                    await ChatDataSource().sendNotification(
+                    await NotificationDataSource().sendNotification(
                       token: deviceToken,
                       title: '$currentUserName',
                       message: value.text,
