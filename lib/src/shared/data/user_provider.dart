@@ -44,4 +44,13 @@ class UserProvider{
       throw '${err.message}';
     }
   }
+
+  Future<void> updateUser(Map<String, dynamic> data) async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    try{
+      await _userDb.doc(uid).update(data);
+    } on FirebaseException catch (err){
+      throw '${err.message}';
+    }
+  }
 }

@@ -43,6 +43,26 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: const Text('Order Detail'),
+        actions: [
+          TextButton(
+            onPressed: () async{
+              final response = await
+                  OrderDataSource().completeOrder(orderId: widget.orderId);
+              if(!context.mounted) return;
+              buildSuccessDialog(
+                context,
+                response,
+                () {
+                  Navigator.pop(context);
+                },
+              );
+            },
+            child: Text(
+              'Mark as Completed',
+              style: theme.textTheme.labelMedium?.copyWith(color: Colors.blue),
+            ),
+          ),
+        ],
       ),
       body: orderDetail.when(
         data: (data) {
@@ -291,22 +311,25 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
                               ? BuildButton(
                                   onPressed: () async {
                                     final navigator = Navigator.of(context);
-                                    final currentUser = FirebaseAuth.instance.currentUser!.uid;
+                                    final currentUser =
+                                        FirebaseAuth.instance.currentUser!.uid;
                                     final scaffoldMessage =
                                         ScaffoldMessenger.of(context);
                                     final response = await ref
                                         .read(roomProvider)
                                         .createRoom(data.user);
-                                    final otherUser = response?.users.firstWhere((element) => element.id != currentUser);
+                                    final otherUser = response?.users
+                                        .firstWhere((element) =>
+                                            element.id != currentUser);
                                     if (response != null) {
-                                        navigator.push(
-                                          MaterialPageRoute(
-                                            builder: (_) => ChatScreen(
-                                              room: response,
-                                              name: otherUser!.firstName!,
-                                            ),
+                                      navigator.push(
+                                        MaterialPageRoute(
+                                          builder: (_) => ChatScreen(
+                                            room: response,
+                                            name: otherUser!.firstName!,
                                           ),
-                                        );
+                                        ),
+                                      );
                                     } else {
                                       scaffoldMessage.showSnackBar(
                                         const SnackBar(
@@ -402,7 +425,7 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
                   BuildButton(
                     onPressed: () async {
                       final navigator = Navigator.of(context);
-                      if(formKey.currentState!.validate()){
+                      if (formKey.currentState!.validate()) {
                         buildLoadingDialog(context, 'Rejecting');
                         final response = await ref.read(
                             rejectOrderProvider(orderData.orderId).future);
