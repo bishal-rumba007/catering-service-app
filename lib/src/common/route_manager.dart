@@ -8,7 +8,9 @@ import 'package:catering_service_app/src/features/dashboard/screens/home_screen.
 import 'package:catering_service_app/src/features/menu/screens/menu_screen.dart';
 import 'package:catering_service_app/src/features/notification/screens/notification_screen.dart';
 import 'package:catering_service_app/src/features/order/screens/order_screen.dart';
+import 'package:catering_service_app/src/features/profile/screens/profile_edit_screen.dart';
 import 'package:catering_service_app/src/features/profile/screens/profile_screen.dart';
+import 'package:catering_service_app/src/features/profile/screens/support_screen.dart';
 import 'package:flutter/material.dart';
 
 class Routes {
@@ -22,6 +24,8 @@ class Routes {
   static const String orderListRoute = '/order-list';
   static const String recentChats = '/recent-chat';
   static const String chatRoute = '/chat';
+  static const String supportRoute = '/support';
+  static const String profileEditRoute = '/profile-edit';
 }
 
 class RouteGenerator{
@@ -45,6 +49,11 @@ class RouteGenerator{
         return MaterialPageRoute(builder: (_) => const OrderScreen());
       case Routes.recentChats:
         return MaterialPageRoute(builder: (_) => const RecentChatScreen());
+      case Routes.supportRoute:
+        return MaterialPageRoute(builder: (_) => const SupportScreen());
+      case Routes.profileEditRoute:
+        return MaterialPageRoute(builder: (_) => const ProfileEditScreen());
+
     ///Todo: Figure out route that requires parameters
     // case Routes.chatRoute:
     //   return MaterialPageRoute(builder: (_) => const ChatScreen(room: argument,));
