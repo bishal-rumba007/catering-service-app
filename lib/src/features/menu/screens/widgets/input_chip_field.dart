@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
 class EditableChipField extends StatefulWidget {
   final List<String> initialValues;
   final ValueChanged<List<String>> onChanged;
-  const EditableChipField({super.key, required this.onChanged, required this.initialValues});
+  final int? maxLine;
+  const EditableChipField({
+    super.key,
+    required this.onChanged,
+    required this.initialValues,
+    this.maxLine,
+  });
 
   @override
   EditableChipFieldState createState() {
@@ -20,7 +27,7 @@ class EditableChipFieldState extends State<EditableChipField> {
   @override
   void initState() {
     super.initState();
-    menuItems = widget.initialValues ?? [];
+    menuItems = widget.initialValues;
   }
 
   @override
@@ -37,6 +44,7 @@ class EditableChipFieldState extends State<EditableChipField> {
           onChanged: _onChanged,
           onSubmitted: _onSubmitted,
           chipBuilder: _chipBuilder,
+          maxLine: widget.maxLine,
           // onTextChanged: _onSearchChanged,
         ),
       ],
@@ -67,7 +75,12 @@ class EditableChipFieldState extends State<EditableChipField> {
       setState(() {
         menuItems = <String>[...menuItems, text.trim()];
       });
-      FocusScope.of(context).requestFocus(FocusNode());
+
+      // Check if the Enter key is pressed
+      if (RawKeyboard.instance.keysPressed.contains(LogicalKeyboardKey.enter)) {
+        // If Enter key is not pressed, request focus to keep the keyboard open
+        FocusScope.of(context).requestFocus(FocusNode());
+      }
       widget.onChanged(menuItems);
     }
   }
@@ -92,12 +105,14 @@ class ChipsInput<T> extends StatefulWidget {
     this.onChipTapped,
     this.onSubmitted,
     this.onTextChanged,
+    this.maxLine = 3,
   });
 
   final List<T> values;
   final InputDecoration decoration;
   final TextStyle? style;
   final StrutStyle? strutStyle;
+  final int? maxLine;
 
   final ValueChanged<List<T>> onChanged;
   final ValueChanged<T>? onChipTapped;
@@ -183,7 +198,7 @@ class ChipsInputState<T> extends State<ChipsInput<T>> {
 
     return TextField(
       minLines: 1,
-      maxLines: 3,
+      maxLines: widget.maxLine,
       style: widget.style,
       strutStyle: widget.strutStyle,
       controller: controller,
@@ -271,13 +286,17 @@ class MenuInputChip extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(right: 3),
-      child: InputChip(
-        key: ObjectKey(menuItem),
-        label: Text(menuItem),
-        onDeleted: () => onDeleted(menuItem),
-        onSelected: (bool value) => onSelected(menuItem),
-        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        padding: EdgeInsets.all(2.w),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 3.h),
+        child: InputChip(
+          deleteIconColor: Theme.of(context).iconTheme.color,
+          key: ObjectKey(menuItem),
+          label: Text(menuItem),
+          onDeleted: () => onDeleted(menuItem),
+          onSelected: (bool value) => onSelected(menuItem),
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          padding: EdgeInsets.all(2.w),
+        ),
       ),
     );
   }

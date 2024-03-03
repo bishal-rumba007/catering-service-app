@@ -93,7 +93,9 @@ class _MenuCardState extends State<MenuCard> {
                       height: 10.h,
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, "/create-menu");
+                      },
                       child: const Text('Create Now'),
                     )
                   ],

@@ -71,6 +71,7 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
                                 () {
                               Navigator.pop(context);
                               Navigator.pop(context);
+                              Navigator.pop(context);
                             },
                           );
                         },
