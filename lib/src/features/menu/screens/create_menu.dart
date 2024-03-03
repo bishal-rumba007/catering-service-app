@@ -21,6 +21,7 @@ class CreateMenuScreen extends ConsumerStatefulWidget {
 
 class _CreateMenuScreenState extends ConsumerState<CreateMenuScreen> {
   final priceController = TextEditingController();
+  final descriptionController = TextEditingController();
 
   String selectedCategoryId = '';
   String selectedCategory = 'Select Category';
@@ -75,6 +76,7 @@ class _CreateMenuScreenState extends ConsumerState<CreateMenuScreen> {
                           isExpanded: true,
                           underline: Container(),
                           items: data.map((CategoryModel category) {
+                            print(category.categoryId);
                             return DropdownMenuItem(
                               value: category.categoryId,
                               child: Text(category.categoryTitle),
@@ -134,18 +136,28 @@ class _CreateMenuScreenState extends ConsumerState<CreateMenuScreen> {
                         labelText: 'Price',
                         hintText: 'price per plate',
                       ),
+                      SizedBox(height: 20.h,),
+                      BuildTextField(
+                        maxLine: 4,
+                        controller: descriptionController,
+                        textInputType: TextInputType.text,
+                        labelText: 'Menu Description',
+                        hintText: 'Example: This menu is a combination of delicious meals that will make....',
+                        alignLabelToTop: true,
+                      ),
                       SizedBox(height: 40.h,),
                       BuildButton(
                         onPressed: () async{
                           final navigator = Navigator.of(context);
                           buildLoadingDialog(context, "Creating Menu....");
                           final response = await MenuDataSource().createMenu(
-                              categoryId: selectedCategoryId,
-                              price: priceController.text.trim(),
-                              categoryName: selectedCategory,
-                              starterMenu: starterMenu,
-                              mainCourseMenu: mainCourseMenu,
-                              dessertMenu: dessertMenu,
+                            categoryId: selectedCategoryId,
+                            price: priceController.text.trim(),
+                            categoryName: selectedCategory,
+                            starterMenu: starterMenu,
+                            mainCourseMenu: mainCourseMenu,
+                            dessertMenu: dessertMenu,
+                            menuDescription: descriptionController.text.trim(),
                           );
                           navigator.pop();
                           if(response != 'Created Menu'){

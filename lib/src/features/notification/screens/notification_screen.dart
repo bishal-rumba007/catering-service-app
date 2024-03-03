@@ -12,7 +12,6 @@ class NotificationScreen extends ConsumerWidget {
     final notifications = ref.watch(notificationListProvider);
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         centerTitle: true,
         title: const Text('Notifications'),
       ),
@@ -43,7 +42,12 @@ class NotificationScreen extends ConsumerWidget {
               ),
             );
           },
-          error: (error, stackTrace) => Center(child: Text(error.toString())),
+          error: (error, stackTrace) {
+            print(stackTrace);
+            return Center(
+              child: Text('$error'),
+            );
+          },
           loading: () =>
           const Center(child: CircularProgressIndicator.adaptive()),
         ),

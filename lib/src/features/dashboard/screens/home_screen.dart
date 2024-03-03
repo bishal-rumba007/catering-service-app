@@ -1,3 +1,4 @@
+import 'package:catering_service_app/src/common/common_export.dart';
 import 'package:catering_service_app/src/features/dashboard/screens/widgets/carousel_card.dart';
 import 'package:catering_service_app/src/features/dashboard/screens/widgets/category_card.dart';
 import 'package:catering_service_app/src/features/dashboard/screens/widgets/menu_widget.dart';
@@ -105,9 +106,28 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         height: 16.h,
                       ),
                       data.isEmpty ?
-                      Text(
-                        'Create menus so people discover your business more!',
-                        style: Theme.of(context).textTheme.bodyMedium,
+                      Column(
+                        children: [
+                          Text(
+                            'Create menus so people discover\n your business more!',
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                         SizedBox(
+                           width: 160.w,
+                           child: BuildButton(
+                               onPressed: (){
+                                  Navigator.pushNamed(context, '/create-menu');
+                               },
+                               buttonWidget: const Text(
+                                 'Create Menu',
+                               )
+                           ),
+                         ),
+                        ],
                       )
                           : PopularMenuCard(menuData: data,),
                       SizedBox(
@@ -120,9 +140,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ),
           );
         },
-        error: (error, stackTrace) => Center(
-          child: Text('$error'),
-        ),
+        error: (error, stackTrace) {
+          print(stackTrace);
+          return Center(
+            child: Text('$error'),
+          );
+        },
         loading: () => const Center(
           child: CircularProgressIndicator(),
         ),

@@ -32,6 +32,7 @@ class AuthDataSource{
               'email': email,
               'phone': phoneNumber,
               'deviceToken': token,
+              'role': 'Service Provider',
             }
         ),
       );

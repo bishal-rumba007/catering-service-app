@@ -37,6 +37,7 @@ class NotificationDataSource{
       throw Exception(e.message);
     }
   }
+
   Future<void> sendNotification({required String token, required String title, required String message, Map<String, dynamic>? notificationData}) async {
     final dio = Dio(
         BaseOptions(
@@ -65,6 +66,7 @@ class NotificationDataSource{
       throw Exception(err.message);
     }
   }
+
 }
 
 

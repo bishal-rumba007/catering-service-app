@@ -5,11 +5,14 @@ import 'package:catering_service_app/src/features/auth/screens/login_screen.dart
 import 'package:catering_service_app/src/features/auth/screens/sign_up_screen.dart';
 import 'package:catering_service_app/src/features/chat/screens/recent_chat_screen.dart';
 import 'package:catering_service_app/src/features/dashboard/screens/home_screen.dart';
+import 'package:catering_service_app/src/features/menu/screens/create_menu.dart';
 import 'package:catering_service_app/src/features/menu/screens/menu_screen.dart';
 import 'package:catering_service_app/src/features/notification/screens/notification_screen.dart';
 import 'package:catering_service_app/src/features/order/screens/order_screen.dart';
+import 'package:catering_service_app/src/features/payment/screens/payment_history_screen.dart';
 import 'package:catering_service_app/src/features/profile/screens/profile_edit_screen.dart';
 import 'package:catering_service_app/src/features/profile/screens/profile_screen.dart';
+import 'package:catering_service_app/src/features/profile/screens/service_history_screen.dart';
 import 'package:catering_service_app/src/features/profile/screens/support_screen.dart';
 import 'package:catering_service_app/src/features/search/screen/search_screen.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +31,9 @@ class Routes {
   static const String supportRoute = '/support';
   static const String profileEditRoute = '/profile-edit';
   static const String searchRoute = '/search';
+  static const String paymentHistoryRoute = '/payment-history';
+  static const String serviceHistoryRoute = '/service-history';
+  static const String createMenuRoute = '/create-menu';
 }
 
 class RouteGenerator{
@@ -57,7 +63,12 @@ class RouteGenerator{
         return MaterialPageRoute(builder: (_) => const ProfileEditScreen());
       case Routes.searchRoute:
         return MaterialPageRoute(builder: (_) => const SearchScreen());
-
+      case Routes.paymentHistoryRoute:
+        return MaterialPageRoute(builder: (_) => const PaymentHistoryScreen());
+      case Routes.serviceHistoryRoute:
+        return MaterialPageRoute(builder: (_) => const ServiceHistoryScreen());
+      case Routes.createMenuRoute:
+        return MaterialPageRoute(builder: (_) => const CreateMenuScreen());
     ///Todo: Figure out route that requires parameters
     // case Routes.chatRoute:
     //   return MaterialPageRoute(builder: (_) => const ChatScreen(room: argument,));

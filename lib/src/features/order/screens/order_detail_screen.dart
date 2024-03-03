@@ -70,10 +70,11 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
                             response,
                                 () {
                               Navigator.pop(context);
+                              Navigator.pop(context);
                             },
                           );
                         },
-                        child: Text(
+                        child: const Text(
                           'Yes',
                         ),
                       ),
@@ -329,69 +330,7 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
                           SizedBox(
                             height: 30.h,
                           ),
-                          data.orderStatus.index == 1
-                              ? BuildButton(
-                                  onPressed: () async {
-                                    final navigator = Navigator.of(context);
-                                    final currentUser =
-                                        FirebaseAuth.instance.currentUser!.uid;
-                                    final scaffoldMessage =
-                                        ScaffoldMessenger.of(context);
-                                    final response = await ref
-                                        .read(roomProvider)
-                                        .createRoom(data.user);
-                                    final otherUser = response?.users
-                                        .firstWhere((element) =>
-                                            element.id != currentUser);
-                                    if (response != null) {
-                                      navigator.push(
-                                        MaterialPageRoute(
-                                          builder: (_) => ChatScreen(
-                                            room: response,
-                                            name: otherUser!.firstName!,
-                                          ),
-                                        ),
-                                      );
-                                    } else {
-                                      scaffoldMessage.showSnackBar(
-                                        const SnackBar(
-                                            duration:
-                                                Duration(milliseconds: 1500),
-                                            content:
-                                                Text("something went wrong")),
-                                      );
-                                    }
-                                  },
-                                  buttonWidget: const Text('Message'),
-                                )
-                              : Row(
-                                  children: [
-                                    Expanded(
-                                      child: OutlinedButton(
-                                        onPressed: () {
-                                          buildRejectModal(context, data);
-                                        },
-                                        child: const Text('Decline'),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 16.w,
-                                    ),
-                                    Expanded(
-                                      child: BuildButton(
-                                        onPressed: () async {
-                                          buildLoadingDialog(
-                                              context, 'Accepting');
-                                          ref.read(
-                                            acceptOrderProvider(data.orderId),
-                                          );
-                                          Navigator.pop(context);
-                                        },
-                                        buttonWidget: const Text('Accept'),
-                                      ),
-                                    )
-                                  ],
-                                ),
+                          displayButton(context, data.orderStatus.index, data),
                           SizedBox(
                             height: 10.h,
                           ),
@@ -410,6 +349,76 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
         loading: () => const Center(child: CircularProgressIndicator()),
       ),
     );
+  }
+
+  displayButton(BuildContext context, int index, OrderModel data) {
+    if (index == 1) {
+      return BuildButton(
+        onPressed: () async {
+          final navigator = Navigator.of(context);
+          final currentUser =
+              FirebaseAuth.instance.currentUser!.uid;
+          final scaffoldMessage =
+          ScaffoldMessenger.of(context);
+          final response = await ref
+              .read(roomProvider)
+              .createRoom(data.user);
+          final otherUser = response?.users
+              .firstWhere((element) =>
+          element.id != currentUser);
+          if (response != null) {
+            navigator.push(
+              MaterialPageRoute(
+                builder: (_) => ChatScreen(
+                  room: response,
+                  name: otherUser!.firstName!,
+                ),
+              ),
+            );
+          } else {
+            scaffoldMessage.showSnackBar(
+              const SnackBar(
+                  duration:
+                  Duration(milliseconds: 1500),
+                  content:
+                  Text("something went wrong")),
+            );
+          }
+        },
+        buttonWidget: const Text('Message'),
+      );
+    }else if(index == 3){
+      return const SizedBox();
+    } else if(index == 0) {
+      return Row(
+        children: [
+          Expanded(
+            child: OutlinedButton(
+              onPressed: () {
+                buildRejectModal(context, data);
+              },
+              child: const Text('Decline'),
+            ),
+          ),
+          SizedBox(
+            width: 16.w,
+          ),
+          Expanded(
+            child: BuildButton(
+              onPressed: () async {
+                buildLoadingDialog(
+                    context, 'Accepting');
+                ref.read(
+                  acceptOrderProvider(data.orderId),
+                );
+                Navigator.pop(context);
+              },
+              buttonWidget: const Text('Accept'),
+            ),
+          )
+        ],
+      );
+    }
   }
 
   Future<dynamic> buildRejectModal(BuildContext context, OrderModel orderData) {
@@ -485,6 +494,7 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
       },
     );
   }
+
 }
 
 
