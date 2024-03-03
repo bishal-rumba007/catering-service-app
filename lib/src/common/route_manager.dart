@@ -11,6 +11,7 @@ import 'package:catering_service_app/src/features/order/screens/order_screen.dar
 import 'package:catering_service_app/src/features/profile/screens/profile_edit_screen.dart';
 import 'package:catering_service_app/src/features/profile/screens/profile_screen.dart';
 import 'package:catering_service_app/src/features/profile/screens/support_screen.dart';
+import 'package:catering_service_app/src/features/search/screen/search_screen.dart';
 import 'package:flutter/material.dart';
 
 class Routes {
@@ -26,6 +27,7 @@ class Routes {
   static const String chatRoute = '/chat';
   static const String supportRoute = '/support';
   static const String profileEditRoute = '/profile-edit';
+  static const String searchRoute = '/search';
 }
 
 class RouteGenerator{
@@ -53,6 +55,8 @@ class RouteGenerator{
         return MaterialPageRoute(builder: (_) => const SupportScreen());
       case Routes.profileEditRoute:
         return MaterialPageRoute(builder: (_) => const ProfileEditScreen());
+      case Routes.searchRoute:
+        return MaterialPageRoute(builder: (_) => const SearchScreen());
 
     ///Todo: Figure out route that requires parameters
     // case Routes.chatRoute:

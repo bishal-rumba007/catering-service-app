@@ -44,24 +44,46 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
       appBar: AppBar(
         title: const Text('Order Detail'),
         actions: [
-          TextButton(
-            onPressed: () async{
-              final response = await
-                  OrderDataSource().completeOrder(orderId: widget.orderId);
-              if(!context.mounted) return;
-              buildSuccessDialog(
-                context,
-                response,
-                () {
-                  Navigator.pop(context);
+          IconButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: const Text('Complete Order'),
+                    content: const Text(
+                        'Mark order as Completed?'),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text('No'),
+                      ),
+                      TextButton(
+                        onPressed: () async{
+                          final response = await
+                          OrderDataSource().completeOrder(orderId: widget.orderId);
+                          if(!context.mounted) return;
+                          buildSuccessDialog(
+                            context,
+                            response,
+                                () {
+                              Navigator.pop(context);
+                            },
+                          );
+                        },
+                        child: Text(
+                          'Yes',
+                        ),
+                      ),
+                    ],
+                  );
                 },
               );
             },
-            child: Text(
-              'Mark as Completed',
-              style: theme.textTheme.labelMedium?.copyWith(color: Colors.blue),
-            ),
-          ),
+            icon: const Icon(Icons.more_vert),
+          )
         ],
       ),
       body: orderDetail.when(
@@ -464,3 +486,6 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
     );
   }
 }
+
+
+
