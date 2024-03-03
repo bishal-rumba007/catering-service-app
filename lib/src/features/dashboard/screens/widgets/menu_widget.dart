@@ -32,7 +32,7 @@ class PopularMenuCard extends StatelessWidget {
               crossAxisCount: 2,
               crossAxisSpacing: 10.w,
               mainAxisSpacing: 10.w,
-              childAspectRatio: 0.89
+              childAspectRatio: 0.86
           ),
           itemBuilder: (context, index) {
             return Card(
@@ -61,7 +61,7 @@ class PopularMenuCard extends StatelessWidget {
                       '${menuData[index].categoryName} Menu',
                       style: Theme.of(context).textTheme.bodyMedium
                     ),
-                    const Spacer(),
+                    SizedBox(height: 4.h,),
                     Text(
                       'Per person',
                       style: Theme.of(context).textTheme.labelSmall

@@ -61,7 +61,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         actions: [
           InkWell(
             splashFactory: InkRipple.splashFactory,
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, '/search');
+            },
             child: Padding(
               padding: EdgeInsets.only(right: 8.w),
               child: Container(
@@ -83,34 +85,38 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       drawer: const MyDrawer(),
       body: menuData.when(
         data: (data) {
-          return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 18.w),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 20.h,
+          return SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 20.h,
+                ),
+                const CarouselCard(),
+                SizedBox(
+                  height: 20.h,
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 18.w),
+                  child: Column(
+                    children: [
+                      const CategoryWidget(),
+                      SizedBox(
+                        height: 16.h,
+                      ),
+                      data.isEmpty ?
+                      Text(
+                        'Create menus so people discover your business more!',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      )
+                          : PopularMenuCard(menuData: data,),
+                      SizedBox(
+                        height: 200.h,
+                      ),
+                    ],
                   ),
-                  const CarouselCard(),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  const CategoryWidget(),
-                  SizedBox(
-                    height: 16.h,
-                  ),
-                  data.isEmpty ?
-                  Text(
-                    'Create menus so people discover your business more!',
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  )
-                      : PopularMenuCard(menuData: data,),
-                  SizedBox(
-                    height: 200.h,
-                  ),
-                ],
-              ),
+                )
+              ],
             ),
           );
         },
