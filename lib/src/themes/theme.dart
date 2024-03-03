@@ -200,6 +200,17 @@ ThemeData darkMode = ThemeData(
       borderRadius: BorderRadius.circular(8.r),
     ),
   ),
+  bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    backgroundColor: Colors.grey.shade900.withAlpha(500),
+    elevation: 4,
+    showUnselectedLabels: true,
+    selectedIconTheme: const IconThemeData(
+      color: AppColor.primaryRed,
+    ),
+    unselectedIconTheme: IconThemeData(
+      color: Colors.grey.shade500,
+    ),
+  ),
 );
 
 ThemeData lightMode = ThemeData(
@@ -437,6 +448,17 @@ ThemeData lightMode = ThemeData(
         width: 1.5,
       ),
       borderRadius: BorderRadius.circular(8.r),
+    ),
+  ),
+  bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    elevation: 2,
+    backgroundColor: Colors.white.withAlpha(500),
+    showUnselectedLabels: true,
+    selectedIconTheme: const IconThemeData(
+      color: AppColor.primaryRed,
+    ),
+    unselectedIconTheme: const IconThemeData(
+      color: AppColor.greyColor,
     ),
   ),
 );

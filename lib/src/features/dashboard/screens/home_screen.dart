@@ -91,11 +91,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: 20.h,
+                  height: 30.h,
                 ),
                 const CarouselCard(),
                 SizedBox(
-                  height: 20.h,
+                  height: 30.h,
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 18.w),
@@ -141,7 +141,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           );
         },
         error: (error, stackTrace) {
-          print(stackTrace);
           return Center(
             child: Text('$error'),
           );

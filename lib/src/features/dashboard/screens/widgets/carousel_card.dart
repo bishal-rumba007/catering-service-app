@@ -41,13 +41,13 @@ class _CarouselCardState extends State<CarouselCard> {
       )
           .toList(),
       options: CarouselOptions(
-        height: 140.h,
+        height: 150.h,
         autoPlay: true,
         autoPlayInterval: const Duration(seconds: 3),
         autoPlayAnimationDuration: const Duration(milliseconds: 800),
         autoPlayCurve: Curves.fastOutSlowIn,
         enlargeCenterPage: true,
-        viewportFraction: 0.85,
+        viewportFraction: 0.82,
         aspectRatio: 2.0,
         initialPage: 2,
       ),

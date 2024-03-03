@@ -1,5 +1,7 @@
 
 
+import 'package:catering_service_app/src/features/review/domain/review_model.dart';
+
 class Menus {
   String userId;
   String menuId;
@@ -8,9 +10,11 @@ class Menus {
   String categoryId;
   String categoryName;
   String categoryImage;
+  String menuDescription;
   List<String> starterMenu;
   List<String> mainCourseMenu;
   List<String> dessertMenu;
+  List<ReviewModel>? reviews;
 
   Menus({
     required this.userId,
@@ -23,6 +27,8 @@ class Menus {
     required this.starterMenu,
     required this.mainCourseMenu,
     required this.dessertMenu,
+    required this.menuDescription,
+    this.reviews = const [],
   });
 
   factory Menus.fromJson(Map<String, dynamic> json) {
@@ -34,9 +40,11 @@ class Menus {
       categoryId: json['categoryId'],
       categoryName: json['categoryName'],
       categoryImage: json['categoryImage'],
+      menuDescription: json['menuDescription'],
       starterMenu: List<String>.from(json['starterMenu']),
       mainCourseMenu: List<String>.from(json['mainCourseMenu']),
       dessertMenu: List<String>.from(json['dessertMenu']),
+      reviews: json['reviews'],
     );
   }
 

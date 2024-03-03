@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 
 
-final singleUserProvider = StreamProvider((ref) => UserProvider().userStream());
+final singleUserProvider = StreamProvider.autoDispose((ref) => UserProvider().userStream());
 final allUserProvider = StreamProvider((ref) => UserProvider().allUserStream());
 
 class UserProvider{

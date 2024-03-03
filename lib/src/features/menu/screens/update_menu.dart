@@ -23,6 +23,7 @@ class UpdateMenuScreen extends ConsumerStatefulWidget {
 
 class _UpdateMenuScreenState extends ConsumerState<UpdateMenuScreen> {
   final priceController = TextEditingController();
+  final descriptionController = TextEditingController();
 
   late String selectedCategoryId;
   late String selectedCategory;
@@ -41,6 +42,7 @@ class _UpdateMenuScreenState extends ConsumerState<UpdateMenuScreen> {
     mainCourseMenu = List<String>.from(widget.myMenu.mainCourseMenu);
     dessertMenu = List<String>.from(widget.myMenu.dessertMenu);
     priceController.text = price;
+    descriptionController.text = widget.myMenu.menuDescription;
   }
 
   @override
@@ -141,6 +143,15 @@ class _UpdateMenuScreenState extends ConsumerState<UpdateMenuScreen> {
                           textInputType: TextInputType.number,
                           labelText: 'Price',
                           hintText: 'price per plate',
+                        ),
+                        SizedBox(height: 20.h,),
+                        BuildTextField(
+                          maxLine: 4,
+                          controller: descriptionController,
+                          textInputType: TextInputType.text,
+                          labelText: 'Menu Description',
+                          hintText: 'Example: This menu is a combination of delicious meals that will make....',
+                          alignLabelToTop: true,
                         ),
                         SizedBox(height: 40.h,),
                         BuildButton(

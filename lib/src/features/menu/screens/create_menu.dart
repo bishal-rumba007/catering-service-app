@@ -76,7 +76,6 @@ class _CreateMenuScreenState extends ConsumerState<CreateMenuScreen> {
                           isExpanded: true,
                           underline: Container(),
                           items: data.map((CategoryModel category) {
-                            print(category.categoryId);
                             return DropdownMenuItem(
                               value: category.categoryId,
                               child: Text(category.categoryTitle),
