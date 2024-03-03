@@ -10,12 +10,16 @@ final categoryProvider = FutureProvider<List<CategoryModel>>((ref) => CategoryPr
 class CategoryProvider{
 
   final categoryDb = FirebaseFirestore.instance.collection('categories');
+
   Future<List<CategoryModel>> getCategories() async {
     try {
-      final response = await categoryDb.snapshots().first;
+      final response = await categoryDb.get();
       final categories = response.docs.map((doc) {
         final json = doc.data();
-        return CategoryModel.fromJson(json);
+        return CategoryModel.fromJson({
+          ...json,
+          'categoryId': doc.id,
+        });
       }).toList();
       return categories;
     } on FirebaseException catch (err) {

@@ -14,7 +14,7 @@ class MenuDataSource{
 
   Future<String> createMenu({required String categoryId, required String price,
     required List<String> starterMenu, required List<String> mainCourseMenu,
-    required List<String> dessertMenu, required String categoryName}) async{
+    required List<String> dessertMenu, required String categoryName, String? menuDescription}) async{
     try{
       final userData = await _userDb.doc(uid).get();
       await menuDb.add({
@@ -25,7 +25,8 @@ class MenuDataSource{
         'categoryName': categoryName,
         'starterMenu': starterMenu,
         'mainCourseMenu': mainCourseMenu,
-        'dessertMenu': dessertMenu
+        'dessertMenu': dessertMenu,
+        'menuDescription': menuDescription ?? "",
       });
       return 'Created Menu';
     }on FirebaseException catch(err){

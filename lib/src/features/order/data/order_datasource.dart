@@ -129,14 +129,14 @@ class OrderDataSource{
   Future<String> rejectNotification({required OrderModel orderModel, required String reason}) async {
     try {
       await _notificationDb.add({
-        'title': 'Order Cancelled',
-        'body': 'Your order for ${orderModel.menuName} has been cancelled',
+        'title': 'Order Declined',
+        'body': 'Your order for ${orderModel.menuName} has been declined',
         'notificationType': 'order',
         'orderId': orderModel.orderId,
         'senderId': orderModel.orderDetail.customerId,
         'receiverId': orderModel.catererId,
-        'status': 'unread',
-        'createdAt': DateTime.now().microsecondsSinceEpoch.toString(),
+        'isRead': false,
+        'createdAt': "${DateTime.now()}",
         'data': {
           'reason': reason,
           'orderInfo': orderModel.toJson()

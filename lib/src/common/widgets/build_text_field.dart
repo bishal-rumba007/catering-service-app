@@ -107,6 +107,7 @@ class BuildTextField extends StatelessWidget {
     this.maxLine,
     this.autoFocus = false,
     this.isEnabled = true,
+    this.alignLabelToTop,
   }) : super(key: key);
 
   final TextEditingController controller;
@@ -117,6 +118,7 @@ class BuildTextField extends StatelessWidget {
   final TextInputAction? textInputAction;
   final IconButton? suffixIconButton;
   final int? maxLine;
+  final bool? alignLabelToTop;
   final bool autoFocus;
   final bool isEnabled;
 
@@ -134,6 +136,7 @@ class BuildTextField extends StatelessWidget {
       maxLines: maxLine,
       obscureText: false,
       decoration: InputDecoration(
+        alignLabelWithHint: alignLabelToTop,
         labelText: labelText,
         hintText: hintText,
         suffixIcon: suffixIconButton,
