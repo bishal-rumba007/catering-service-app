@@ -1,9 +1,6 @@
 import 'package:catering_service_app/src/features/auth/screens/auth_provider.dart';
-import 'package:catering_service_app/src/features/auth/screens/widgets/build_dialogs.dart';
-import 'package:catering_service_app/src/features/profile/data/profile_datasource.dart';
 import 'package:catering_service_app/src/features/profile/data/update_image_provider.dart';
 import 'package:catering_service_app/src/features/profile/screens/widgets/option_card.dart';
-import 'package:catering_service_app/src/shared/data/image_provider.dart';
 import 'package:catering_service_app/src/shared/data/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,7 +19,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final userStream = ref.watch(singleUserProvider);
-    final image = ref.watch(imageProvider);
     return Scaffold(
       body: userStream.when(
         data: (data) {
@@ -87,7 +83,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                 onPressed: () async{
                                   final ImagePicker picker = ImagePicker();
                                   final myImage = await picker.pickImage(source: ImageSource.gallery);
-                                  print(myImage?.path);
                                   if(myImage != null){
                                     ref.read(updateImageProvider(myImage));
                                   }else {
@@ -193,6 +188,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 left: 0.0,
                 right: 0.0,
                 child: AppBar(
+                  automaticallyImplyLeading: false,
                   centerTitle: true,
                   backgroundColor: Colors.transparent,
                   elevation: 0.0,

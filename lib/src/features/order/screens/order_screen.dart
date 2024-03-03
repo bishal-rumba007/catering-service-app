@@ -13,6 +13,7 @@ class OrderScreen extends ConsumerWidget {
     final orderData = ref.watch(orderProvider);
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         centerTitle: true,
         title: const Text('Orders'),
       ),
